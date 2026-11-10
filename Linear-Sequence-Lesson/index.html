@@ -1,1 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 10 Maths: Sequences Worksheet</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for rendering math LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap');
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        h1, h2, h3, .heading-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Shake animation for errors */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+        .shake-input {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        /* Print formatting stylesheet */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .print-shadow-none {
+                box-shadow: none !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+            input {
+                border: 1px solid #94a3b8 !important;
+                background: transparent !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <!-- Top Action Bar (No Print) -->
+    <div class="no-print bg-slate-900 text-white sticky top-0 z-40 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <span class="bg-purple-600 text-white p-2 rounded-lg text-lg flex items-center justify-center">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </span>
+                <div>
+                    <h1 class="font-bold text-base leading-tight">Grade 10 Mathematics</h1>
+                    <p class="text-xs text-slate-400">Linear Sequences & \(n^{\text{th}}\) Term Rules</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="window.print()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-print"></i> Print / Export
+                </button>
+                <button onclick="resetWorksheet()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+                <button onclick="checkAllAnswers()" class="px-4 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold rounded-lg shadow-md transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-check-double"></i> Check Answers
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-5xl mx-auto px-4 mt-6">
+
+        <!-- Header Card -->
+        <header class="bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 rounded-2xl p-6 md:p-8 text-white shadow-xl mb-8 relative overflow-hidden print-shadow-none">
+            <div class="absolute -right-6 -bottom-6 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl"></div>
+            
+            <div class="relative z-10 flex flex-col md:flex-row justify-between md:items-center gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-400/30 rounded-full text-xs font-semibold text-purple-300 mb-3">
+                        <i class="fa-solid fa-book-open"></i> Interactive Math Worksheet
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Sequences & Rules</h1>
+                    <p class="text-purple-200 text-sm md:text-base mt-1">Mastering term-to-term rules, finding general expressions, and evaluating future terms.</p>
+                </div>
+                <!-- Student Info Inputs -->
+                <div class="bg-white/10 backdrop-blur border border-white/20 p-4 rounded-xl flex flex-col gap-2 min-w-[220px]">
+                    <div>
+                        <label class="text-xs text-purple-200 font-semibold block uppercase tracking-wider">Student Name:</label>
+                        <input type="text" placeholder="Enter your name..." class="bg-slate-900/50 border border-purple-300/40 rounded px-2.5 py-1 text-sm text-white w-full outline-none focus:border-purple-400">
+                    </div>
+                    <div>
+                        <label class="text-xs text-purple-200 font-semibold block uppercase tracking-wider">Class / Period:</label>
+                        <input type="text" placeholder="e.g. Grade 10 - Period 3" class="bg-slate-900/50 border border-purple-300/40 rounded px-2.5 py-1 text-sm text-white w-full outline-none focus:border-purple-400">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Score Banner (Hidden initially) -->
+        <div id="score-banner" class="hidden mb-6 p-4 rounded-xl bg-slate-900 text-white flex items-center justify-between shadow-lg no-print">
+            <div class="flex items-center space-x-3">
+                <div id="score-badge" class="w-12 h-12 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-lg">
+                    0%
+                </div>
+                <div>
+                    <h3 id="score-title" class="font-bold text-lg">Score Summary</h3>
+                    <p id="score-subtitle" class="text-sm text-slate-300">Keep trying! Check red highlighted boxes.</p>
+                </div>
+            </div>
+            <button onclick="checkAllAnswers()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg text-sm font-semibold">
+                Re-check
+            </button>
+        </div>
+
+        <!-- Fernando's Worked Example Box -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-md mb-8 print-shadow-none">
+            <div class="flex items-center gap-3 border-b border-slate-200 pb-4 mb-4">
+                <div class="w-12 h-12 bg-amber-500/10 text-amber-600 rounded-xl flex items-center justify-center text-2xl font-bold border border-amber-500/20">
+                    👨‍🍳
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800">Fernando's Recipe for Sequences</h2>
+                    <p class="text-xs text-slate-500">Study Fernando's step-by-step strategy for finding the \(n^{\text{th}}\) term rule.</p>
+                </div>
+            </div>
+
+            <!-- Example Walkthrough Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Step 1 Card -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                    <span class="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-100 px-2.5 py-1 rounded-md">Step 1: Term Table & Difference</span>
+                    
+                    <div class="overflow-x-auto mt-3">
+                        <table class="w-full text-xs text-center border-collapse">
+                            <thead>
+                                <tr class="bg-purple-900 text-white">
+                                    <th class="p-1.5 border border-purple-800">Term Number (\(n\))</th>
+                                    <th class="p-1.5 border border-purple-800">1</th>
+                                    <th class="p-1.5 border border-purple-800">2</th>
+                                    <th class="p-1.5 border border-purple-800">3</th>
+                                    <th class="p-1.5 border border-purple-800">4</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white text-slate-800 font-semibold">
+                                    <td class="p-1.5 border border-slate-200 bg-purple-50">Sequence</td>
+                                    <td class="p-1.5 border border-slate-200">2</td>
+                                    <td class="p-1.5 border border-slate-200">5</td>
+                                    <td class="p-1.5 border border-slate-200">8</td>
+                                    <td class="p-1.5 border border-slate-200">11</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-2">
+                        The common difference between each term is <strong class="text-purple-700">+3</strong>. 
+                        Because it goes up by 3 each time, the rule starts with <strong>\(3n\)</strong>.
+                    </p>
+                </div>
+
+                <!-- Step 2 Card -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-100 px-2.5 py-1 rounded-md">Step 2: Adjusting to match</span>
+                    
+                    <div class="overflow-x-auto mt-3">
+                        <table class="w-full text-xs text-center border-collapse">
+                            <tbody>
+                                <tr class="bg-slate-100 text-slate-700">
+                                    <td class="p-1.5 border border-slate-200 font-medium">\(3n\) sequence</td>
+                                    <td class="p-1.5 border border-slate-200">3</td>
+                                    <td class="p-1.5 border border-slate-200">6</td>
+                                    <td class="p-1.5 border border-slate-200">9</td>
+                                    <td class="p-1.5 border border-slate-200">12</td>
+                                </tr>
+                                <tr class="bg-emerald-50 text-emerald-900 font-bold">
+                                    <td class="p-1.5 border border-slate-200">Target sequence</td>
+                                    <td class="p-1.5 border border-slate-200">2</td>
+                                    <td class="p-1.5 border border-slate-200">5</td>
+                                    <td class="p-1.5 border border-slate-200">8</td>
+                                    <td class="p-1.5 border border-slate-200">11</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-2">
+                        To get from \(3n\) (\(3, 6, 9, 12\dots\)) to our target sequence, we must <strong>subtract 1</strong>.
+                    </p>
+                    <div class="mt-2 text-sm font-bold text-purple-900 bg-purple-100 border border-purple-300 p-2 rounded text-center">
+                        Full Rule: \(3n - 1\)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION A -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-md mb-8 print-shadow-none">
+            <div class="mb-4">
+                <span class="text-xs font-extrabold uppercase tracking-wider bg-purple-100 text-purple-700 px-3 py-1 rounded-full">Section A</span>
+                <h2 class="text-2xl font-bold text-slate-800 mt-2">Analyzing Linear Sequences</h2>
+                <p class="text-sm text-slate-600 mt-1">For each sequence below, calculate: <strong>(a)</strong> the next 3 terms, <strong>(b)</strong> the \(n^{\text{th}}\) term rule, and <strong>(c)</strong> the \(20^{\text{th}}\) term.</p>
+            </div>
+
+            <!-- Table of Questions 1-10 -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[650px]">
+                    <thead>
+                        <tr class="bg-slate-900 text-white text-xs uppercase tracking-wider">
+                            <th class="p-3 rounded-tl-xl">#</th>
+                            <th class="p-3">Given Sequence</th>
+                            <th class="p-3">a) Next 3 Terms</th>
+                            <th class="p-3">b) \(n^{\text{th}}\) Term Rule</th>
+                            <th class="p-3 rounded-tr-xl">c) \(20^{\text{th}}\) Term</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 text-sm" id="section-a-body">
+                        <!-- Items rendered by JS script -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION B -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-md mb-8 print-shadow-none">
+            <div class="mb-4">
+                <span class="text-xs font-extrabold uppercase tracking-wider bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">Section B</span>
+                <h2 class="text-2xl font-bold text-slate-800 mt-2">Generating Terms from an \(n^{\text{th}}\) Term Rule</h2>
+                <p class="text-sm text-slate-600 mt-1">Write down the first five terms of the sequence given by each algebraic rule.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="section-b-container">
+                <!-- Items rendered by JS script -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS Logic -->
+    <script>
+        // Section A Questions Dataset
+        const sectionAData = [
+            { id: 1, seq: "3, 5, 7, 9 ...", next3: ["11", "13", "15"], nth: "2n+1", term20: "41", hint: "Diff = +2. Rule = 2n + 1" },
+            { id: 2, seq: "9, 12, 15, 18 ...", next3: ["21", "24", "27"], nth: "3n+6", term20: "66", hint: "Diff = +3. Rule = 3n + 6" },
+            { id: 3, seq: "7, 11, 15, 19 ...", next3: ["23", "27", "31"], nth: "4n+3", term20: "83", hint: "Diff = +4. Rule = 4n + 3" },
+            { id: 4, seq: "10, 16, 22, 28 ...", next3: ["34", "40", "46"], nth: "6n+4", term20: "124", hint: "Diff = +6. Rule = 6n + 4" },
+            { id: 5, seq: "1, 5, 9, 13 ...", next3: ["17", "21", "25"], nth: "4n-3", term20: "77", hint: "Diff = +4. Rule = 4n - 3" },
+            { id: 6, seq: "4, 11, 18, 25 ...", next3: ["32", "39", "46"], nth: "7n-3", term20: "137", hint: "Diff = +7. Rule = 7n - 3" },
+            { id: 7, seq: "2, 7, 12, 17 ...", next3: ["22", "27", "32"], nth: "5n-3", term20: "97", hint: "Diff = +5. Rule = 5n - 3" },
+            { id: 8, seq: "4, 9, 14, 19 ...", next3: ["24", "29", "34"], nth: "5n-1", term20: "99", hint: "Diff = +5. Rule = 5n - 1" },
+            { id: 9, seq: "7, 5, 3, 1 ...", next3: ["-1", "-3", "-5"], nth: "-2n+9", altNth: "9-2n", term20: "-31", hint: "Decreasing sequence! Diff = -2. Rule = -2n + 9" },
+            { id: 10, seq: "16, 13, 10, 7 ...", next3: ["4", "1", "-2"], nth: "-3n+19", altNth: "19-3n", term20: "-41", hint: "Decreasing sequence! Diff = -3. Rule = -3n + 19" }
+        ];
+
+        // Section B Questions Dataset
+        const sectionBData = [
+            { id: 11, rule: "3n + 6", terms: ["9", "12", "15", "18", "21"] },
+            { id: 12, rule: "2n - 3", terms: ["-1", "1", "3", "5", "7"] },
+            { id: 13, rule: "-2n + 1", terms: ["-1", "-3", "-5", "-7", "-9"] },
+            { id: 14, rule: "-5n + 12", terms: ["7", "2", "-3", "-8", "-13"] }
+        ];
+
+        // Render Page Contents
+        function initPage() {
+            // Render Section A
+            const sectionABody = document.getElementById('section-a-body');
+            sectionABody.innerHTML = sectionAData.map(q => `
+                <tr class="hover:bg-slate-50 border-b border-slate-100 transition">
+                    <td class="p-3 font-bold text-slate-500">${q.id}</td>
+                    <td class="p-3 font-semibold text-purple-950 font-mono text-base">${q.seq}</td>
+                    <!-- Next 3 Terms -->
+                    <td class="p-3">
+                        <div class="flex items-center gap-1.5">
+                            <input type="text" id="secA-${q.id}-term1" placeholder="t5" class="w-12 text-center bg-slate-100 border border-slate-300 rounded p-1 font-mono font-medium focus:bg-white focus:border-purple-500 outline-none text-sm">
+                            <input type="text" id="secA-${q.id}-term2" placeholder="t6" class="w-12 text-center bg-slate-100 border border-slate-300 rounded p-1 font-mono font-medium focus:bg-white focus:border-purple-500 outline-none text-sm">
+                            <input type="text" id="secA-${q.id}-term3" placeholder="t7" class="w-12 text-center bg-slate-100 border border-slate-300 rounded p-1 font-mono font-medium focus:bg-white focus:border-purple-500 outline-none text-sm">
+                        </div>
+                    </td>
+                    <!-- nth term -->
+                    <td class="p-3">
+                        <input type="text" id="secA-${q.id}-nth" placeholder="e.g. 3n-1" class="w-28 text-center bg-slate-100 border border-slate-300 rounded p-1 font-mono font-semibold text-purple-900 focus:bg-white focus:border-purple-500 outline-none text-sm">
+                    </td>
+                    <!-- 20th term -->
+                    <td class="p-3">
+                        <input type="text" id="secA-${q.id}-t20" placeholder="ans" class="w-16 text-center bg-slate-100 border border-slate-300 rounded p-1 font-mono font-medium focus:bg-white focus:border-purple-500 outline-none text-sm">
+                    </td>
+                </tr>
+            `).join('');
+
+            // Render Section B
+            const sectionBContainer = document.getElementById('section-b-container');
+            sectionBContainer.innerHTML = sectionBData.map(q => `
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-bold text-slate-700">Question ${q.id}</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 font-mono font-bold rounded-lg text-sm border border-indigo-200">
+                            \\(${q.rule}\\)
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2">
+                        ${[1, 2, 3, 4, 5].map(idx => `
+                            <div class="flex flex-col items-center">
+                                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-1">n=${idx}</span>
+                                <input type="text" id="secB-${q.id}-t${idx}" placeholder="?" 
+                                    class="w-full text-center bg-white border border-slate-300 rounded-lg p-2 font-mono font-bold text-slate-800 focus:border-indigo-500 outline-none">
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Trigger MathJax re-render for dynamically added math LaTeX
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Clean text input for formatting variations (e.g. spaces in formulas like "3n - 1")
+        function clean(val) {
+            return val.toString().toLowerCase().replace(/\s+/g, '');
+        }
+
+        // Check All Answers
+        function checkAllAnswers() {
+            let totalInputs = 0;
+            let correctInputs = 0;
+
+            // Check Section A
+            sectionAData.forEach(q => {
+                // Next 3 terms
+                q.next3.forEach((val, idx) => {
+                    totalInputs++;
+                    const inputEl = document.getElementById(`secA-${q.id}-term${idx + 1}`);
+                    if (clean(inputEl.value) === clean(val)) {
+                        markCorrect(inputEl);
+                        correctInputs++;
+                    } else {
+                        markIncorrect(inputEl);
+                    }
+                });
+
+                // nth term
+                totalInputs++;
+                const nthInput = document.getElementById(`secA-${q.id}-nth`);
+                const userNth = clean(nthInput.value);
+                if (userNth === clean(q.nth) || (q.altNth && userNth === clean(q.altNth))) {
+                    markCorrect(nthInput);
+                    correctInputs++;
+                } else {
+                    markIncorrect(nthInput);
+                }
+
+                // 20th term
+                totalInputs++;
+                const t20Input = document.getElementById(`secA-${q.id}-t20`);
+                if (clean(t20Input.value) === clean(q.term20)) {
+                    markCorrect(t20Input);
+                    correctInputs++;
+                } else {
+                    markIncorrect(t20Input);
+                }
+            });
+
+            // Check Section B
+            sectionBData.forEach(q => {
+                q.terms.forEach((val, idx) => {
+                    totalInputs++;
+                    const inputEl = document.getElementById(`secB-${q.id}-t${idx + 1}`);
+                    if (clean(inputEl.value) === clean(val)) {
+                        markCorrect(inputEl);
+                        correctInputs++;
+                    } else {
+                        markIncorrect(inputEl);
+                    }
+                });
+            });
+
+            // Calculate percentage
+            const percentage = Math.round((correctInputs / totalInputs) * 100);
+            showScoreBanner(percentage, correctInputs, totalInputs);
+
+            if (percentage === 100 && typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.5 }
+                });
+            }
+        }
+
+        function markCorrect(el) {
+            el.classList.remove('border-slate-300', 'border-red-500', 'bg-red-50', 'text-red-900', 'shake-input');
+            el.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-900', 'font-bold');
+        }
+
+        function markIncorrect(el) {
+            el.classList.remove('border-slate-300', 'border-emerald-500', 'bg-emerald-50', 'text-emerald-900');
+            el.classList.add('border-red-500', 'bg-red-50', 'text-red-900', 'shake-input');
+        }
+
+        function showScoreBanner(percentage, correct, total) {
+            const banner = document.getElementById('score-banner');
+            const badge = document.getElementById('score-badge');
+            const title = document.getElementById('score-title');
+            const subtitle = document.getElementById('score-subtitle');
+
+            banner.classList.remove('hidden');
+            badge.innerText = `${percentage}%`;
+
+            if (percentage === 100) {
+                badge.className = 'w-12 h-12 rounded-full bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-lg';
+                title.innerText = "Perfect Score! 🎉";
+                subtitle.innerText = `Outstanding! You answered all ${total} questions correctly!`;
+            } else if (percentage >= 75) {
+                badge.className = 'w-12 h-12 rounded-full bg-purple-500 text-white font-bold flex items-center justify-center text-lg';
+                title.innerText = "Great Job!";
+                subtitle.innerText = `You scored ${correct} out of ${total}. Check red boxes to fix small errors.`;
+            } else {
+                badge.className = 'w-12 h-12 rounded-full bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-lg';
+                title.innerText = "Keep Going!";
+                subtitle.innerText = `You got ${correct} out of ${total} correct. Review Fernando's recipe above!`;
+            }
+        }
+
+        function resetWorksheet() {
+            document.querySelectorAll('input[type="text"]').forEach(input => {
+                input.value = '';
+                input.className = input.className.replace(/border-(emerald|red)-500|bg-(emerald|red)-50|text-(emerald|red)-900|shake-input/g, '');
+                input.classList.add('border-slate-300');
+            });
+            document.getElementById('score-banner').classList.add('hidden');
+        }
+
+        window.onload = initPage;
+    </script>
+</body>
+</html>
