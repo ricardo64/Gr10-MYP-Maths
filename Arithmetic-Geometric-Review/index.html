@@ -1,1 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 10 Maths: Arithmetic & Geometric Sequences Quiz</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for crisp mathematical notation -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+            chtml: { scale: 1.15 }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Canvas Confetti for high scores -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap');
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+
+        h1, h2, h3, .heading-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom radio option hover and active styling */
+        .option-label {
+            transition: all 0.15s ease-in-out;
+        }
+        .option-label:hover:not(.locked) {
+            border-color: #6366f1;
+            background-color: #eef2ff;
+        }
+        .option-input:checked + .option-box {
+            border-color: #4f46e5;
+            background-color: #eef2ff;
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.25);
+        }
+        .option-input:checked + .option-box .option-letter {
+            background-color: #4f46e5;
+            color: #ffffff;
+            border-color: #4f46e5;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <!-- Top Sticky Bar -->
+    <div class="bg-slate-900 text-white sticky top-0 z-40 shadow-md">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <span class="bg-indigo-600 text-white p-2 rounded-lg text-lg flex items-center justify-center">
+                    <i class="fa-solid fa-clipboard-question"></i>
+                </span>
+                <div>
+                    <h1 class="font-bold text-base leading-tight">Grade 10 Mathematics Quiz</h1>
+                    <p class="text-xs text-slate-400">Arithmetic & Geometric Sequences • 15 Questions</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span id="progress-pill" class="text-xs font-semibold bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-full text-slate-200">
+                    Answered: <span id="answered-count" class="text-indigo-400 font-bold">0</span> / 15
+                </span>
+                <button onclick="resetQuiz()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-left"></i> Retake
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main id="top-anchor" class="max-w-4xl mx-auto px-4 pt-6">
+
+        <!-- Header & Student Details Card -->
+        <header class="bg-gradient-to-r from-indigo-900 via-slate-900 to-purple-900 rounded-2xl p-6 text-white shadow-xl mb-6 border border-slate-700">
+            <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-0.5 bg-indigo-500/20 border border-indigo-400/40 rounded-full text-xs font-bold text-indigo-300 uppercase tracking-wider mb-2">
+                        <i class="fa-solid fa-star"></i> Formative Assessment
+                    </span>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Arithmetic & Geometric Sequences</h1>
+                    <p class="text-indigo-200 text-sm mt-1">Complete all 15 questions and click <strong>Submit Quiz</strong> at the bottom.</p>
+                </div>
+
+                <!-- Student Name & Class Inputs -->
+                <div class="bg-white/10 backdrop-blur border border-white/25 p-3.5 rounded-xl flex flex-col gap-2 min-w-[240px]">
+                    <div>
+                        <label for="student-name" class="text-[11px] text-indigo-200 font-bold uppercase tracking-wider block">Student Name <span class="text-rose-400">*</span></label>
+                        <input type="text" id="student-name" placeholder="Enter your full name..." class="mt-0.5 w-full bg-slate-900/70 border border-indigo-300/40 focus:border-indigo-400 rounded-lg px-2.5 py-1.5 text-sm text-white placeholder-slate-400 outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label for="student-class" class="text-[11px] text-indigo-200 font-bold uppercase tracking-wider block">Class / Period</label>
+                            <input type="text" id="student-class" placeholder="e.g. 10A" class="mt-0.5 w-full bg-slate-900/70 border border-indigo-300/40 focus:border-indigo-400 rounded-lg px-2.5 py-1 text-sm text-white placeholder-slate-400 outline-none">
+                        </div>
+                        <div>
+                            <label for="quiz-date" class="text-[11px] text-indigo-200 font-bold uppercase tracking-wider block">Date</label>
+                            <input type="text" id="quiz-date" class="mt-0.5 w-full bg-slate-900/70 border border-indigo-300/40 focus:border-indigo-400 rounded-lg px-2.5 py-1 text-sm text-white outline-none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Validation Alert Banner (Hidden by default) -->
+        <div id="validation-banner" class="hidden mb-6 p-4 rounded-xl bg-amber-50 border-2 border-amber-400 text-amber-950 shadow-md flex items-start gap-3">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl mt-0.5"></i>
+            <div>
+                <h3 class="font-bold text-sm">Please complete all required fields before submitting!</h3>
+                <p id="validation-msg" class="text-xs text-amber-800 mt-0.5">Make sure you have entered your name and answered every question.</p>
+            </div>
+        </div>
+
+        <!-- SCORE SUMMARY BOX FOR TODDLE SCREENSHOT (Hidden until submitted) -->
+        <section id="score-card" class="hidden mb-8 rounded-2xl bg-white border-4 border-indigo-600 shadow-2xl overflow-hidden">
+            <div class="bg-indigo-600 text-white px-6 py-3 flex flex-wrap justify-between items-center gap-2">
+                <div class="flex items-center gap-2 font-bold text-sm uppercase tracking-wider">
+                    <i class="fa-solid fa-award text-lg text-amber-300"></i> Quiz Results Summary
+                </div>
+                <span id="result-timestamp" class="text-xs text-indigo-100 font-mono"></span>
+            </div>
+
+            <div class="p-6">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-5 border-b border-slate-200">
+                    <!-- Student Info Display -->
+                    <div class="text-center md:text-left">
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Student</p>
+                        <h2 id="result-student-name" class="text-2xl font-extrabold text-slate-900">—</h2>
+                        <p id="result-student-class" class="text-sm font-medium text-slate-600 mt-0.5">Class: —</p>
+                        <p id="result-feedback-text" class="text-sm font-semibold text-indigo-700 mt-2"></p>
+                    </div>
+
+                    <!-- Big Score & Percentage Box -->
+                    <div class="flex items-center gap-4 bg-slate-50 border-2 border-slate-200 px-6 py-4 rounded-2xl">
+                        <div class="text-center pr-4 border-r border-slate-300">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block">Score</span>
+                            <span id="result-fraction" class="text-3xl md:text-4xl font-extrabold text-slate-900">0 / 15</span>
+                        </div>
+                        <div class="text-center pl-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block">Percentage</span>
+                            <span id="result-percent" class="text-3xl md:text-4xl font-extrabold text-indigo-600">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toddle Upload Callout -->
+                <div class="mt-4 bg-indigo-50 border border-indigo-200 rounded-xl p-3.5 flex items-center gap-3 text-indigo-950">
+                    <span class="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-camera"></i>
+                    </span>
+                    <div class="text-xs sm:text-sm">
+                        <strong>Next Step:</strong> Take a screenshot of this summary box and upload it to <strong>today's Toddle lesson</strong>. Scroll down to review your answers and read the explanations for any missed questions.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Questions Container -->
+        <form id="quiz-form" onsubmit="event.preventDefault(); submitQuiz();" class="space-y-5">
+            <div id="questions-container" class="space-y-5">
+                <!-- Questions rendered dynamically by JS -->
+            </div>
+
+            <!-- Submit Button Footer -->
+            <div id="submit-section" class="pt-4 pb-8 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white border-2 border-slate-300 rounded-2xl p-5 shadow-md">
+                <div class="text-sm text-slate-600">
+                    <i class="fa-solid fa-circle-info text-indigo-600 mr-1"></i>
+                    Double-check all 15 questions before submitting.
+                </div>
+                <button type="submit" id="submit-btn" class="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Quiz
+                </button>
+            </div>
+        </form>
+
+    </main>
+
+    <script>
+        // Quiz Data: Questions 1-11 from the Quizizz PDF + 4 New Grade 10 Extension Questions (12-15)
+        const quizQuestions = [
+            {
+                num: 1,
+                prompt: "Arithmetic, geometric, or neither?",
+                sequence: "\\(4,\\; 9,\\; 14,\\; 19,\\; \\dots\\)",
+                options: ["Geometric", "Neither", "Arithmetic"],
+                correctIndex: 2,
+                explanation: "Each term increases by adding a constant common difference of \\(d = 5\\) (\\(9 - 4 = 5\\), \\(14 - 9 = 5\\)), so this is an <strong>Arithmetic</strong> sequence."
+            },
+            {
+                num: 2,
+                prompt: "Arithmetic, geometric, or neither?",
+                sequence: "\\(1,\\; 3,\\; 7,\\; 13,\\; \\dots\\)",
+                options: ["Geometric", "Neither", "Arithmetic"],
+                correctIndex: 1,
+                explanation: "The differences between terms are \\(+2, +4, +6\\) (not constant) and the ratios are \\(3, \\frac{7}{3}, \\frac{13}{7}\\) (not constant), so it is <strong>Neither</strong>."
+            },
+            {
+                num: 3,
+                prompt: "Arithmetic, geometric, or neither?",
+                sequence: "\\(100,\\; 50,\\; 25,\\; 12.5,\\; \\dots\\)",
+                options: ["Neither", "Geometric", "Arithmetic"],
+                correctIndex: 1,
+                explanation: "Each term is multiplied by a constant common ratio of \\(r = 0.5\\) (or \\(\\frac{1}{2}\\)), making this a <strong>Geometric</strong> sequence."
+            },
+            {
+                num: 4,
+                prompt: "Find the common difference:",
+                sequence: "\\(25,\\; 13,\\; 1,\\; -11,\\; \\dots\\)",
+                options: ["\\(-12\\)", "\\(-8\\)", "\\(8\\)", "\\(12\\)"],
+                correctIndex: 0,
+                explanation: "Subtract the first term from the second term: \\(d = 13 - 25 = -12\\)."
+            },
+            {
+                num: 5,
+                prompt: "Find the common ratio:",
+                sequence: "\\(2,\\; 8,\\; 32,\\; 128,\\; \\dots\\)",
+                options: ["\\(\\frac{1}{4}\\)", "\\(6\\)", "\\(\\frac{1}{6}\\)", "\\(4\\)"],
+                correctIndex: 3,
+                explanation: "Divide any term by its previous term: \\(r = \\frac{8}{2} = 4\\)."
+            },
+            {
+                num: 6,
+                prompt: "Find the next term:",
+                sequence: "\\(81,\\; 9,\\; 1,\\; \\frac{1}{9},\\; \\dots\\)",
+                options: ["\\(\\frac{1}{81}\\)", "\\(18\\)", "\\(\\frac{1}{27}\\)", "\\(\\frac{1}{18}\\)"],
+                correctIndex: 0,
+                explanation: "The common ratio is \\(r = \\frac{9}{81} = \\frac{1}{9}\\). Multiplying the fourth term by \\(\\frac{1}{9}\\) gives \\(\\frac{1}{9} \\times \\frac{1}{9} = \\frac{1}{81}\\)."
+            },
+            {
+                num: 7,
+                prompt: "Find the next term:",
+                sequence: "\\(100,\\; 65,\\; 30,\\; -5,\\; \\dots\\)",
+                options: ["\\(20\\)", "\\(40\\)", "\\(-40\\)", "\\(-20\\)"],
+                correctIndex: 2,
+                explanation: "This is an arithmetic sequence with common difference \\(d = 65 - 100 = -35\\). The next term is \\(-5 + (-35) = -40\\)."
+            },
+            {
+                num: 8,
+                prompt: "Find the explicit formula:",
+                sequence: "\\(3,\\; 6,\\; 12,\\; 24,\\; \\dots\\)",
+                options: [
+                    "\\(a_n = 6 \\cdot \\left(\\frac{1}{2}\\right)^n\\)",
+                    "\\(a_n = 3 \\cdot 2^{n-1}\\)",
+                    "\\(a_n = 6 \\cdot \\left(\\frac{1}{2}\\right)^{n-1}\\)",
+                    "\\(a_n = 3 \\cdot 2^n\\)"
+                ],
+                correctIndex: 1,
+                explanation: "Using \\(a_n = a_1 \\cdot r^{n-1}\\) with first term \\(a_1 = 3\\) and common ratio \\(r = \\frac{6}{3} = 2\\) gives \\(a_n = 3 \\cdot 2^{n-1}\\)."
+            },
+            {
+                num: 9,
+                prompt: "Find the eighth term (\\(a_8\\)):",
+                sequence: "\\(3,\\; 6,\\; 12,\\; 24,\\; \\dots\\)",
+                options: ["\\(192\\)", "\\(384\\)", "\\(768\\)", "\\(48\\)"],
+                correctIndex: 1,
+                explanation: "Substitute \\(n = 8\\) into \\(a_n = 3 \\cdot 2^{n-1}\\): \\(a_8 = 3 \\cdot 2^{8-1} = 3 \\cdot 2^7 = 3 \\cdot 128 = 384\\)."
+            },
+            {
+                num: 10,
+                prompt: "Find the explicit formula:",
+                sequence: "\\(8,\\; 14,\\; 20,\\; 26,\\; \\dots\\)",
+                options: [
+                    "\\(a_n = 2n + 6\\)",
+                    "\\(a_n = 8n + 6\\)",
+                    "\\(a_n = 6n + 2\\)",
+                    "\\(a_n = 6n + 8\\)"
+                ],
+                correctIndex: 2,
+                explanation: "This is an arithmetic sequence with \\(a_1 = 8\\) and \\(d = 6\\). Simplifying \\(a_n = 8 + (n - 1)(6)\\) gives \\(a_n = 8 + 6n - 6 = 6n + 2\\)."
+            },
+            {
+                num: 11,
+                prompt: "Find the tenth term (\\(a_{10}\\)):",
+                sequence: "\\(8,\\; 14,\\; 20,\\; 26,\\; \\dots\\)",
+                options: ["\\(68\\)", "\\(56\\)", "\\(62\\)", "\\(60\\)"],
+                correctIndex: 2,
+                explanation: "Substitute \\(n = 10\\) into \\(a_n = 6n + 2\\): \\(a_{10} = 6(10) + 2 = 60 + 2 = 62\\)."
+            },
+            {
+                num: 12,
+                prompt: "Find the common ratio (\\(r\\)) of the alternating geometric sequence:",
+                sequence: "\\(-4,\\; 12,\\; -36,\\; 108,\\; \\dots\\)",
+                options: ["\\(3\\)", "\\(-3\\)", "\\(16\\)", "\\(-\\frac{1}{3}\\)"],
+                correctIndex: 1,
+                explanation: "Divide the second term by the first term: \\(r = \\frac{12}{-4} = -3\\). Because \\(r\\) is negative, the signs alternate."
+            },
+            {
+                num: 13,
+                prompt: "Find the 6th term (\\(a_6\\)) of the geometric sequence:",
+                sequence: "\\(5,\\; -10,\\; 20,\\; -40,\\; \\dots\\)",
+                options: ["\\(160\\)", "\\(-320\\)", "\\(-160\\)", "\\(320\\)"],
+                correctIndex: 2,
+                explanation: "Here \\(a_1 = 5\\) and \\(r = -2\\). Thus \\(a_6 = 5 \\cdot (-2)^{6-1} = 5 \\cdot (-2)^5 = 5 \\cdot (-32) = -160\\)."
+            },
+            {
+                num: 14,
+                prompt: "Find the missing middle term \\(x\\) in this positive geometric sequence:",
+                sequence: "\\(7,\\; x,\\; 63,\\; \\dots\\)",
+                options: ["\\(35\\)", "\\(21\\)", "\\(28\\)", "\\(14\\)"],
+                correctIndex: 1,
+                explanation: "In a geometric sequence, \\(\\frac{x}{7} = \\frac{63}{x} \\Rightarrow x^2 = 7 \\times 63 = 441\\). Taking the positive square root gives \\(x = \\sqrt{441} = 21\\) (with \\(r = 3\\))."
+            },
+            {
+                num: 15,
+                prompt: "A bacterial culture starts with \\(50\\) cells (\\(n = 1\\)) and doubles every hour. Which formula models the population \\(P_n\\) and how many cells exist at \\(n = 6\\)?",
+                options: [
+                    "\\(P_n = 50 \\cdot 2^{n-1};\\quad 1600\\text{ cells}\\)",
+                    "\\(P_n = 50 \\cdot 2^n;\\quad 3200\\text{ cells}\\)",
+                    "\\(P_n = 50 + 2(n-1);\\quad 60\\text{ cells}\\)",
+                    "\\(P_n = 2 \\cdot 50^{n-1};\\quad 3125\\text{ cells}\\)"
+                ],
+                correctIndex: 0,
+                explanation: "With initial value \\(P_1 = 50\\) and growth factor \\(r = 2\\), the formula is \\(P_n = 50 \\cdot 2^{n-1}\\). At \\(n = 6\\), \\(P_6 = 50 \\cdot 2^5 = 50 \\cdot 32 = 1600\\) cells."
+            }
+        ];
+
+        const letters = ["A", "B", "C", "D"];
+        let isSubmitted = false;
+
+        function initQuiz() {
+            // Set today's date automatically
+            const dateInput = document.getElementById('quiz-date');
+            if (dateInput) {
+                const today = new Date();
+                dateInput.value = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            }
+
+            const container = document.getElementById('questions-container');
+            container.innerHTML = quizQuestions.map((q, qIdx) => `
+                <article id="question-card-${q.num}" class="bg-white border-2 border-slate-300 rounded-2xl p-5 md:p-6 shadow-sm transition-colors">
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div class="flex items-start gap-3">
+                            <span id="q-badge-${q.num}" class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-900 border border-indigo-300 font-extrabold text-sm flex items-center justify-center shrink-0 mt-0.5">
+                                ${q.num}
+                            </span>
+                            <div>
+                                <h3 class="text-base md:text-lg font-bold text-slate-900 leading-snug">${q.prompt}</h3>
+                                <div class="mt-2 inline-block bg-slate-100 border border-slate-300 px-3.5 py-1.5 rounded-xl text-base md:text-lg font-semibold text-slate-900">
+                                    ${q.sequence}
+                                </div>
+                            </div>
+                        </div>
+                        <span id="status-tag-${q.num}" class="hidden text-xs font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full shrink-0"></span>
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+                        ${q.options.map((opt, optIdx) => `
+                            <label id="label-${q.num}-${optIdx}" class="option-label cursor-pointer block relative">
+                                <input type="radio" name="q${q.num}" value="${optIdx}" onchange="updateProgress()" class="option-input sr-only">
+                                <div id="box-${q.num}-${optIdx}" class="option-box flex items-center gap-3 p-3.5 rounded-xl border-2 border-slate-200 bg-slate-50/70">
+                                    <span id="letter-${q.num}-${optIdx}" class="option-letter w-7 h-7 rounded-lg border border-slate-300 bg-white text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">
+                                        ${letters[optIdx]}
+                                    </span>
+                                    <span class="text-sm md:text-base font-medium text-slate-900">${opt}</span>
+                                </div>
+                            </label>
+                        `).join('')}
+                    </div>
+
+                    <!-- Explanation Box (Hidden until submitted; shown for incorrect answers) -->
+                    <div id="explanation-${q.num}" class="hidden mt-4 p-4 rounded-xl bg-rose-100/80 border border-rose-300 text-rose-950 text-sm">
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-lightbulb text-rose-600 text-base mt-0.5 shrink-0"></i>
+                            <div>
+                                <p class="font-bold text-rose-900 mb-0.5">Explanation (Correct Answer: ${letters[q.correctIndex]})</p>
+                                <p class="leading-relaxed">${q.explanation}</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function updateProgress() {
+            let answered = 0;
+            quizQuestions.forEach(q => {
+                const selected = document.querySelector(`input[name="q${q.num}"]:checked`);
+                if (selected) answered++;
+            });
+            document.getElementById('answered-count').innerText = answered;
+        }
+
+        function submitQuiz() {
+            const nameInput = document.getElementById('student-name');
+            const studentName = nameInput.value.trim();
+            const studentClass = document.getElementById('student-class').value.trim();
+            const validationBanner = document.getElementById('validation-banner');
+            const validationMsg = document.getElementById('validation-msg');
+
+            // Check if name is entered
+            if (!studentName) {
+                validationBanner.classList.remove('hidden');
+                validationMsg.innerText = "Please enter your Student Name at the top before submitting so it appears on your screenshot.";
+                nameInput.focus();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            // Check if all 15 questions are answered
+            const unanswered = [];
+            quizQuestions.forEach(q => {
+                const selected = document.querySelector(`input[name="q${q.num}"]:checked`);
+                if (!selected) unanswered.push(q.num);
+            });
+
+            if (unanswered.length > 0) {
+                validationBanner.classList.remove('hidden');
+                validationMsg.innerText = `You still need to answer question(s): ${unanswered.join(', ')}.`;
+                const firstMissing = document.getElementById(`question-card-${unanswered[0]}`);
+                if (firstMissing) {
+                    firstMissing.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
+            // Hide validation warning if previously shown
+            validationBanner.classList.add('hidden');
+            isSubmitted = true;
+
+            let score = 0;
+            const total = quizQuestions.length;
+
+            quizQuestions.forEach(q => {
+                const selectedInput = document.querySelector(`input[name="q${q.num}"]:checked`);
+                const chosenIdx = parseInt(selectedInput.value, 10);
+                const isCorrect = chosenIdx === q.correctIndex;
+
+                const card = document.getElementById(`question-card-${q.num}`);
+                const badge = document.getElementById(`q-badge-${q.num}`);
+                const statusTag = document.getElementById(`status-tag-${q.num}`);
+                const explanationBox = document.getElementById(`explanation-${q.num}`);
+
+                // Lock all radio buttons in this question
+                document.querySelectorAll(`input[name="q${q.num}"]`).forEach((inp, idx) => {
+                    inp.disabled = true;
+                    document.getElementById(`label-${q.num}-${idx}`).classList.add('locked', 'cursor-default');
+                });
+
+                if (isCorrect) {
+                    score++;
+                    // Highlight card in green
+                    card.classList.remove('border-slate-300', 'bg-white');
+                    card.classList.add('border-emerald-500', 'bg-emerald-50/60');
+
+                    badge.className = "w-8 h-8 rounded-xl bg-emerald-600 text-white font-extrabold text-sm flex items-center justify-center shrink-0 mt-0.5";
+
+                    statusTag.className = "text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-600 text-white flex items-center gap-1 shrink-0";
+                    statusTag.innerHTML = '<i class="fa-solid fa-check"></i> Correct';
+                    statusTag.classList.remove('hidden');
+
+                    // Highlight selected box in green
+                    const chosenBox = document.getElementById(`box-${q.num}-${chosenIdx}`);
+                    const chosenLetter = document.getElementById(`letter-${q.num}-${chosenIdx}`);
+                    chosenBox.className = "option-box flex items-center gap-3 p-3.5 rounded-xl border-2 border-emerald-600 bg-emerald-100/90";
+                    chosenLetter.className = "option-letter w-7 h-7 rounded-lg bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shrink-0";
+                } else {
+                    // Highlight card in red
+                    card.classList.remove('border-slate-300', 'bg-white');
+                    card.classList.add('border-rose-500', 'bg-rose-50/60');
+
+                    badge.className = "w-8 h-8 rounded-xl bg-rose-600 text-white font-extrabold text-sm flex items-center justify-center shrink-0 mt-0.5";
+
+                    statusTag.className = "text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-600 text-white flex items-center gap-1 shrink-0";
+                    statusTag.innerHTML = '<i class="fa-solid fa-xmark"></i> Incorrect';
+                    statusTag.classList.remove('hidden');
+
+                    // Highlight student's wrong choice in red
+                    const wrongBox = document.getElementById(`box-${q.num}-${chosenIdx}`);
+                    const wrongLetter = document.getElementById(`letter-${q.num}-${chosenIdx}`);
+                    wrongBox.className = "option-box flex items-center gap-3 p-3.5 rounded-xl border-2 border-rose-600 bg-rose-100/90";
+                    wrongLetter.className = "option-letter w-7 h-7 rounded-lg bg-rose-600 text-white font-bold text-xs flex items-center justify-center shrink-0";
+
+                    // Also indicate the right option clearly
+                    const rightBox = document.getElementById(`box-${q.num}-${q.correctIndex}`);
+                    const rightLetter = document.getElementById(`letter-${q.num}-${q.correctIndex}`);
+                    rightBox.className = "option-box flex items-center gap-3 p-3.5 rounded-xl border-2 border-emerald-600 bg-emerald-50";
+                    rightLetter.className = "option-letter w-7 h-7 rounded-lg bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shrink-0";
+
+                    // Reveal explanation box
+                    explanationBox.classList.remove('hidden');
+                }
+            });
+
+            // Populate Top Score Summary Box
+            const percent = Math.round((score / total) * 100);
+            document.getElementById('result-student-name').innerText = studentName;
+            document.getElementById('result-student-class').innerText = `Class: ${studentClass || 'Not specified'}  •  Date: ${document.getElementById('quiz-date').value}`;
+            document.getElementById('result-fraction').innerText = `${score} / ${total}`;
+            document.getElementById('result-percent').innerText = `${percent}%`;
+
+            const now = new Date();
+            document.getElementById('result-timestamp').innerText = `Submitted: ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+            const feedbackEl = document.getElementById('result-feedback-text');
+            if (percent >= 90) {
+                feedbackEl.innerText = "Outstanding mastery of arithmetic and geometric sequences!";
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 120, spread: 80, origin: { y: 0.4 } });
+                }
+            } else if (percent >= 70) {
+                feedbackEl.innerText = "Great work! Review the red explanations below to master any missed concepts.";
+            } else {
+                feedbackEl.innerText = "Good effort! Carefully read each red explanation below before retaking.";
+            }
+
+            // Show Score Card and disable submit button
+            const scoreCard = document.getElementById('score-card');
+            scoreCard.classList.remove('hidden');
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.className = "w-full sm:w-auto px-8 py-3 bg-slate-400 text-white font-bold text-base rounded-xl cursor-not-allowed flex items-center justify-center gap-2";
+            submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Quiz Submitted';
+
+            // Re-typeset any math in newly revealed explanations
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+
+            // Smoothly scroll back to the top of the document so the student sees their score box
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            isSubmitted = false;
+            document.getElementById('score-card').classList.add('hidden');
+            document.getElementById('validation-banner').classList.add('hidden');
+            document.getElementById('answered-count').innerText = '0';
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = false;
+            submitBtn.className = "w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer";
+            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Quiz';
+
+            initQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
