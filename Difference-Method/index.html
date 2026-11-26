@@ -112,7 +112,7 @@
                 <option value="2">3. Investigation: Linear</option>
                 <option value="3">4. Worked Ex 1: Linear</option>
                 <option value="4">5. Worked Ex 2: Quadratic #1</option>
-                <option value="5">6. CASIO fx-CG50 Guide</option>
+                <option value="5">6. CASIO fx-CG50 Guide &amp; Poll</option>
                 <option value="6">7. Worked Ex 3: Student Try</option>
                 <option value="7">8. Quick Check / Plenary</option>
                 <option value="8">9. Class Practice Launch</option>
@@ -184,12 +184,12 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 items-stretch">
                     <div class="bg-[#EEF4FA] rounded-2xl p-6 border border-slate-200 flex flex-col justify-between">
                         <div>
-                            <h3 class="text-lg font-bold text-[#1B365D] mb-3 flex items-start gap-2.5 leading-snug">
-                                <span class="w-7 h-7 rounded-lg bg-[#1B365D] text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</span>
-                                <span class="leading-snug">Construct a Difference Table (<span class="whitespace-nowrap">&Delta;<sub>1</sub></span>, <span class="whitespace-nowrap">&Delta;<sub>2</sub></span>) to Classify:</span>
+                            <h3 class="text-lg font-bold text-[#1B365D] mb-2.5 flex items-center gap-2.5">
+                                <span class="w-7 h-7 rounded-lg bg-[#1B365D] text-white flex items-center justify-center text-sm font-bold shrink-0">1</span>
+                                <span>Construct a difference table</span>
                             </h3>
-                            <p class="text-slate-700 text-base mb-4">
-                                Subtract consecutive terms step-by-step. Whichever difference row becomes <strong>constant</strong> tells us the degree of the formula:
+                            <p class="text-slate-700 text-sm sm:text-base mb-4 leading-relaxed">
+                                A difference table helps us identify polynomial degree (the highest power): The number of steps needed to reach a constant difference matches the degree of the polynomial (for example, a constant second difference indicates a quadratic function). The differences are represented by the capital Greek letter for D (<strong>&Delta;</strong>) with subscripts.
                             </p>
 
                             <div class="space-y-3">
@@ -203,9 +203,9 @@
                                     <div class="text-slate-700 mt-1 text-base">General form: <span class="math-font text-xl font-bold text-slate-900"><i>u</i><sub><i>n</i></sub> = <i>an</i><sup>2</sup> + <i>bn</i> + <i>c</i></span></div>
                                 </div>
 
-                                <div class="p-4 rounded-xl bg-slate-100 border-l-4 border-slate-400 opacity-85">
+                                <div class="p-4 rounded-xl bg-slate-100 border-l-4 border-slate-400">
                                     <div class="font-bold text-slate-700 text-base">3rd Difference (&Delta;<sub>3</sub>) Constant &rarr; CUBIC <span class="text-xs uppercase bg-slate-200 text-slate-600 px-2 py-0.5 rounded ml-2">Next Lesson</span></div>
-                                    <div class="text-slate-600 mt-0.5 text-sm">General form: <span class="math-font text-base"><i>u</i><sub><i>n</i></sub> = <i>an</i><sup>3</sup> + <i>bn</i><sup>2</sup> + <i>cn</i> + <i>d</i></span></div>
+                                    <div class="text-slate-600 mt-0.5 text-sm">General form: <span class="math-font text-base font-bold text-slate-800"><i>u</i><sub><i>n</i></sub> = <i>an</i><sup>3</sup> + <i>bn</i><sup>2</sup> + <i>cn</i> + <i>d</i></span></div>
                                 </div>
                             </div>
                         </div>
@@ -213,34 +213,45 @@
 
                     <div class="bg-[#1B365D] text-white rounded-2xl p-6 flex flex-col justify-between shadow-lg">
                         <div>
-                            <h3 class="text-lg font-bold text-sky-300 mb-3 flex items-center gap-2">
-                                <span class="w-7 h-7 rounded-lg bg-[#007791] text-white flex items-center justify-center text-sm font-bold">2</span>
-                                Why Use the Difference Method &amp; How We Find <span class="math-font italic">u<sub>n</sub></span>
+                            <h3 class="text-lg font-bold text-sky-300 mb-3 flex items-start gap-2.5">
+                                <span class="w-7 h-7 rounded-lg bg-[#007791] text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">2</span>
+                                <span class="leading-snug">Why Use the Difference Method &amp; How We Find <span class="math-font italic whitespace-nowrap">u<sub>n</sub></span></span>
                             </h3>
-                            <p class="text-slate-200 text-sm sm:text-base mb-4 leading-relaxed">
-                                Row <strong class="text-red-300">&Delta;<sub>1</sub></strong> measures the rate of change between terms, while Row <strong class="text-emerald-300">&Delta;<sub>2</sub></strong> measures how fast that change itself is changing.
-                            </p>
 
-                            <div class="space-y-4">
-                                <div class="bg-white/10 rounded-xl p-4 border border-white/15">
-                                    <div class="text-xs uppercase tracking-wider text-sky-300 font-bold mb-1">If Linear (&Delta;<sub>1</sub> constant)</div>
-                                    <div class="text-lg font-bold text-white mb-1">Use Your Known Algebraic Method</div>
-                                    <p class="text-sm text-slate-200">
-                                        Use <span class="math-font text-base text-white"><i>u</i><sub><i>n</i></sub> = <i>u</i><sub>1</sub> + (<i>n</i> &minus; 1)<i>d</i></span> (or check with GDC Linear Regression).
+                            <div class="bg-white/10 rounded-xl p-3.5 border border-white/15 mb-4 space-y-1.5 text-sm text-slate-100">
+                                <div><strong class="text-red-300">&Delta;<sub>1</sub> (First difference):</strong> How much the sequence goes up or down from one term to the next.</div>
+                                <div><strong class="text-amber-300">&Delta;<sub>2</sub> (Second difference):</strong> How much the step size (&Delta;<sub>1</sub>) itself changes from one term to the next.</div>
+                                <div><strong class="text-purple-300">&Delta;<sub>3</sub> (Third difference):</strong> How much the second difference (&Delta;<sub>2</sub>) changes from one step to the next.</div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="bg-white/10 rounded-xl p-3.5 border border-white/15">
+                                    <div class="text-xs uppercase tracking-wider text-sky-300 font-bold mb-0.5">If Linear (&Delta;<sub>1</sub> constant)</div>
+                                    <div class="text-base font-bold text-white mb-0.5">Use Your Known Algebraic Method</div>
+                                    <p class="text-xs sm:text-sm text-slate-200">
+                                        Use <span class="math-font text-base text-white"><i>u</i><sub><i>n</i></sub> = <i>u</i><sub>1</sub> + (<i>n</i> &minus; 1)<i>d</i></span> (or check with GDC Linear Regression <span class="mono-font text-amber-300">X</span>).
                                     </p>
                                 </div>
 
-                                <div class="bg-teal-500/25 rounded-xl p-4 border border-teal-400/40">
-                                    <div class="text-xs uppercase tracking-wider text-teal-200 font-bold mb-1">If Quadratic (&Delta;<sub>2</sub> constant)</div>
-                                    <div class="text-lg font-bold text-white mb-1">Use the CASIO fx-CG50 GDC</div>
-                                    <p class="text-sm text-slate-100">
+                                <div class="bg-teal-500/25 rounded-xl p-3.5 border border-teal-400/40">
+                                    <div class="text-xs uppercase tracking-wider text-teal-200 font-bold mb-0.5">If Quadratic (&Delta;<sub>2</sub> constant)</div>
+                                    <div class="text-base font-bold text-white mb-0.5">Use the CASIO fx-CG50 GDC</div>
+                                    <p class="text-xs sm:text-sm text-slate-100">
                                         Enter <span class="mono-font text-amber-300"><i>n</i></span> into List 1 and <span class="mono-font text-amber-300"><i>u</i><sub><i>n</i></sub></span> into List 2, then run Quadratic Regression (<span class="mono-font text-amber-300">X<sup>2</sup></span>).
+                                    </p>
+                                </div>
+
+                                <div class="bg-purple-500/20 rounded-xl p-3.5 border border-purple-300/35">
+                                    <div class="text-xs uppercase tracking-wider text-purple-200 font-bold mb-0.5">If Cubic (&Delta;<sub>3</sub> constant) &bull; Next Lesson</div>
+                                    <div class="text-base font-bold text-white mb-0.5">Use the CASIO fx-CG50 GDC (<span class="mono-font text-amber-300">X<sup>3</sup></span>)</div>
+                                    <p class="text-xs sm:text-sm text-slate-100">
+                                        Enter <span class="mono-font text-amber-300"><i>n</i></span> in List 1 and <span class="mono-font text-amber-300"><i>u</i><sub><i>n</i></sub></span> in List 2, then run Cubic Regression (<span class="mono-font text-amber-300">X<sup>3</sup></span>) to get <span class="math-font text-base text-white"><i>u</i><sub><i>n</i></sub> = <i>an</i><sup>3</sup> + <i>bn</i><sup>2</sup> + <i>cn</i> + <i>d</i></span>.
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mt-6 pt-4 border-t border-white/15 text-sm text-sky-200 flex items-center justify-between">
+                        <div class="mt-4 pt-3 border-t border-white/15 text-sm text-sky-200 flex items-center justify-between">
                             <span>Ready to investigate linear differences?</span>
                             <button onclick="changeSlide(1)" class="px-4 py-2 bg-[#007791] hover:bg-teal-600 rounded-lg font-semibold text-white transition">
                                 Next: Investigation &rarr;
@@ -254,12 +265,19 @@
             <!-- SLIDE 3: INVESTIGATION - PART 1 (LINEAR SEQUENCES)                    -->
             <!-- ===================================================================== -->
             <section class="slide flex-1 flex-col p-6 sm:p-8 slide-scroll overflow-y-auto" data-slide="2">
-                <div class="border-b border-slate-200 pb-3 mb-4 flex flex-wrap items-center justify-between gap-2">
+                <div class="border-b border-slate-200 pb-3 mb-4 flex flex-wrap items-center justify-between gap-3">
                     <div>
                         <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Investigation — Part 1</span>
                         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Exploring Linear Sequences</h2>
                     </div>
-                    <span class="text-sm font-semibold text-slate-400">Slide 3 of 9</span>
+                    <div class="flex items-center gap-3">
+                        <a href="02 Investigation–The Difference Method-Linear Sequences.pdf" target="_blank" rel="noopener"
+                            class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-sm transition flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            <span>Open Student Investigation Handout</span>
+                        </a>
+                        <span class="text-sm font-semibold text-slate-400">Slide 3 of 9</span>
+                    </div>
                 </div>
 
                 <div class="bg-[#FDF6E7] border-2 border-[#E0B458] rounded-xl p-4 mb-5">
@@ -517,15 +535,22 @@
             </section>
 
             <!-- ===================================================================== -->
-            <!-- SLIDE 6: CASIO FX-CG50 STEP-BY-STEP WALKTHROUGH & INTERACTIVE SCREEN  -->
+            <!-- SLIDE 6: CASIO FX-CG50 STEP-BY-STEP WALKTHROUGH & HANDOUT FEEDBACK    -->
             <!-- ===================================================================== -->
             <section class="slide flex-1 flex-col p-6 sm:p-8 slide-scroll overflow-y-auto" data-slide="5">
-                <div class="border-b border-slate-200 pb-3 mb-4 flex items-center justify-between">
+                <div class="border-b border-slate-200 pb-3 mb-4 flex flex-wrap items-center justify-between gap-2">
                     <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">GDC Reference</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">GDC Reference &amp; Handout Feedback</span>
                         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Using the CASIO fx-CG50 to Find <span class="math-font italic">u<sub>n</sub></span></h2>
                     </div>
-                    <span class="text-sm font-semibold text-slate-400">Slide 6 of 9</span>
+                    <div class="flex items-center gap-3">
+                        <a href="04_The Difference Method Practice.pdf" target="_blank" rel="noopener"
+                            class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm transition flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <span>8-Question Practice Handout</span>
+                        </a>
+                        <span class="text-sm font-semibold text-slate-400">Slide 6 of 9</span>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -572,6 +597,159 @@
                                 <div class="mt-1.5 space-y-1 text-sm">
                                     <div>• Constant <strong>&Delta;<sub>1</sub></strong> (Linear) &rarr; <span class="keycap keycap-fn">F1</span> (<strong>X</strong>) &rarr; <span class="math-font font-bold">y = ax + b</span></div>
                                     <div>• Constant <strong>&Delta;<sub>2</sub></strong> (Quadratic) &rarr; <span class="keycap keycap-fn">F3</span> (<strong>X<sup>2</sup></strong>) &rarr; <span class="math-font font-bold">y = ax<sup>2</sup> + bx + c</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Handout Comparison Links & Single-Vote Poll Box -->
+                        <div class="p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-300 shadow-sm space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-800">Student Feedback Poll • Live Cloud Tally</span>
+                                    <h3 class="text-base font-bold text-slate-900">Compare the Two CASIO Reference Handouts &amp; Vote</h3>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button id="teacher-live-btn" type="button" onclick="toggleTeacherLiveView()"
+                                        class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition">
+                                        Show Live View
+                                    </button>
+                                    <span id="vote-lock-badge" class="px-2.5 py-1 rounded-full bg-white border border-emerald-300 text-xs font-bold text-emerald-900">
+                                        1 Vote Per Student
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <a href="03a Casio regression-difference method-Handout.docx" target="_blank" rel="noopener"
+                                    class="p-2.5 rounded-xl bg-white hover:bg-blue-50 border border-slate-300 hover:border-blue-500 transition flex items-center justify-between gap-2.5 shadow-sm group">
+                                    <div class="flex items-center gap-2.5 min-w-0">
+                                        <!-- Mini Visual CASIO fx-CG50 Screen Thumbnail Icon for 3a -->
+                                        <div class="w-11 h-11 rounded-lg bg-slate-800 border border-slate-600 p-1 flex flex-col justify-between shrink-0 shadow-inner group-hover:scale-105 transition" title="Visual Screenshot Guide">
+                                            <div class="text-[6px] font-extrabold tracking-widest text-white leading-none text-center">CASIO</div>
+                                            <div class="bg-white rounded-[2px] p-[2px] grid grid-cols-3 gap-[1.5px] flex-1 mt-0.5">
+                                                <span class="bg-orange-500 rounded-[1px]"></span>
+                                                <span class="bg-emerald-500 ring-1 ring-sky-500 rounded-[1px]"></span>
+                                                <span class="bg-pink-500 rounded-[1px]"></span>
+                                                <span class="bg-indigo-500 rounded-[1px]"></span>
+                                                <span class="bg-blue-500 rounded-[1px]"></span>
+                                                <span class="bg-amber-400 rounded-[1px]"></span>
+                                            </div>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="text-xs font-bold text-blue-700">Version A (03a)</div>
+                                            <div class="text-xs font-semibold text-slate-800 leading-tight">Visual Screenshot Guide</div>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-blue-600 shrink-0">Open &nearr;</span>
+                                </a>
+
+                                <a href="03b_CASIO_fxCG50_Sequences_Guide.docx" target="_blank" rel="noopener"
+                                    class="p-2.5 rounded-xl bg-white hover:bg-teal-50 border border-slate-300 hover:border-teal-600 transition flex items-center justify-between gap-2.5 shadow-sm group">
+                                    <div class="flex items-center gap-2.5 min-w-0">
+                                        <!-- Mini Step / Key-Presses Table Thumbnail Icon for 3b -->
+                                        <div class="w-11 h-11 rounded-lg bg-slate-100 border border-slate-300 overflow-hidden flex flex-col shrink-0 shadow-inner group-hover:scale-105 transition" title="Step Table & Key Presses">
+                                            <div class="bg-[#16325b] text-white text-[6.5px] font-bold px-1 py-0.5 flex items-center justify-between leading-none">
+                                                <span>Step</span>
+                                                <span>Keys</span>
+                                            </div>
+                                            <div class="flex-1 flex flex-col justify-center px-1 py-0.5 space-y-0.5 bg-white">
+                                                <div class="flex items-center gap-1 text-[6.5px] font-extrabold text-teal-800 leading-none">
+                                                    <span class="text-slate-700">1</span>
+                                                    <span class="truncate">[MENU]&rarr;[2]</span>
+                                                </div>
+                                                <div class="h-[1px] bg-slate-200 w-full"></div>
+                                                <div class="flex items-center gap-1 text-[6.5px] font-extrabold text-teal-800 leading-none">
+                                                    <span class="text-slate-700">2</span>
+                                                    <span class="truncate">[F2]&rarr;[F3]</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="text-xs font-bold text-teal-700">Version B (03b)</div>
+                                            <div class="text-xs font-semibold text-slate-800 leading-tight">Step Table + Worked Example</div>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-teal-700 shrink-0">Open &nearr;</span>
+                                </a>
+                            </div>
+
+                            <div id="vote-buttons-row" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <button id="vote-btn-A" onclick="castHandoutVote('A')"
+                                    class="py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm shadow transition">
+                                    Vote for Version A (03a)
+                                </button>
+                                <button id="vote-btn-B" onclick="castHandoutVote('B')"
+                                    class="py-2 px-3 rounded-xl bg-teal-600 hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm shadow transition">
+                                    Vote for Version B (03b)
+                                </button>
+                            </div>
+
+                            <div id="vote-results-panel" class="hidden bg-white rounded-xl p-3 border border-emerald-200 space-y-2.5">
+                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                    <span id="vote-status-msg" class="text-xs font-bold text-emerald-800">Live class totals (synced across all devices):</span>
+                                    <div class="flex items-center gap-1.5">
+                                        <button type="button" onclick="fetchCloudVotes(true)"
+                                            class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition">
+                                            Refresh Totals
+                                        </button>
+                                        <button type="button" onclick="downloadVoteChartPNG()"
+                                            class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition">
+                                            Download Visual (PNG)
+                                        </button>
+                                        <button type="button" onclick="downloadVoteCSV()"
+                                            class="px-2.5 py-1 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs transition">
+                                            CSV
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2 text-xs">
+                                    <div>
+                                        <div class="flex justify-between font-bold text-slate-800 mb-0.5">
+                                            <span>Version A (03a — Screenshot Guide)</span>
+                                            <span id="vote-stat-A">0 votes (0%)</span>
+                                        </div>
+                                        <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+                                            <div id="vote-bar-A" class="h-full bg-blue-600 transition-all duration-500" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between font-bold text-slate-800 mb-0.5">
+                                            <span>Version B (03b — Step Table + Example)</span>
+                                            <span id="vote-stat-B">0 votes (0%)</span>
+                                        </div>
+                                        <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+                                            <div id="vote-bar-B" class="h-full bg-teal-600 transition-all duration-500" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-slate-100 text-[11px] text-slate-500">
+                                    <span id="vote-total-label">Total class votes: 0</span>
+                                    <div class="flex items-center gap-2">
+                                        <span id="vote-sync-indicator" class="text-emerald-700 font-semibold">Cloud synced</span>
+                                        <button type="button" onclick="promptTeacherReset()" class="text-slate-400 hover:text-rose-600 underline transition">
+                                            Teacher Reset
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Inline Teacher PIN Box -->
+                                <div id="teacher-reset-box" class="hidden pt-2 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 bg-rose-50 p-2 rounded-lg">
+                                    <span class="text-xs font-bold text-rose-900">Enter Teacher PIN to start a new session:</span>
+                                    <div class="flex items-center gap-1.5">
+                                        <input id="teacher-pin-input" type="password" placeholder="PIN (1234)"
+                                            onkeydown="if(event.key==='Enter'){confirmTeacherReset();}"
+                                            class="w-24 px-2 py-1 text-xs rounded border border-rose-300 bg-white text-slate-900 focus:outline-none">
+                                        <button type="button" onclick="confirmTeacherReset()"
+                                            class="px-2.5 py-1 rounded bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold">
+                                            Reset
+                                        </button>
+                                        <button type="button" onclick="cancelTeacherReset()"
+                                            class="px-2.5 py-1 rounded bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold">
+                                            Cancel
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1871,9 +2049,334 @@
             }
         });
 
+        // Single-Vote Student Poll with Live Cloud Aggregation (Slide 6)
+        const VOTE_STORAGE_KEY = 'bis_gr10_casio_handout_poll_v3';
+        const COUNTER_NAMESPACE = 'bis-gr10-casio-handout-2026';
+        const TEACHER_PIN = '1964'; // Change this 4-digit PIN anytime if desired
+
+        let pollData = {
+            votesA: 0,
+            votesB: 0,
+            userChoice: null,
+            sessionEpoch: 0,
+            resultsVisible: false
+        };
+
+        function loadPollState() {
+            try {
+                const raw = localStorage.getItem(VOTE_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    pollData = {
+                        votesA: Number(parsed.votesA) || 0,
+                        votesB: Number(parsed.votesB) || 0,
+                        userChoice: parsed.userChoice || null,
+                        sessionEpoch: Number(parsed.sessionEpoch) || 0,
+                        resultsVisible: Boolean(parsed.resultsVisible)
+                    };
+                }
+            } catch (err) {
+                // Fallback if storage is restricted
+            }
+            renderPollUI();
+            fetchCloudVotes(false);
+        }
+
+        function savePollState() {
+            try {
+                localStorage.setItem(VOTE_STORAGE_KEY, JSON.stringify(pollData));
+            } catch (err) {
+                // Ignore storage errors in sandboxed previews
+            }
+        }
+
+        function setSyncStatus(text, isError = false) {
+            const el = document.getElementById('vote-sync-indicator');
+            if (!el) return;
+            el.textContent = text;
+            el.className = isError ? 'text-amber-700 font-semibold' : 'text-emerald-700 font-semibold';
+        }
+
+        async function readCounterSafe(counterName) {
+            const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${counterName}/`, {
+                cache: 'no-store'
+            });
+            if (res.status === 400 || res.status === 404) {
+                // Counter has not been incremented yet in this session
+                return 0;
+            }
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+            const data = await res.json();
+            return Number(data.count) || 0;
+        }
+
+        async function fetchCloudVotes(manualRefresh = false) {
+            if (manualRefresh) setSyncStatus('Refreshing...');
+            try {
+                const cloudEpoch = await readCounterSafe('epoch');
+                if (cloudEpoch > pollData.sessionEpoch) {
+                    pollData.sessionEpoch = cloudEpoch;
+                    pollData.userChoice = null;
+                    pollData.votesA = 0;
+                    pollData.votesB = 0;
+                }
+                const keyA = `handout-a-s${pollData.sessionEpoch}`;
+                const keyB = `handout-b-s${pollData.sessionEpoch}`;
+
+                const [cloudA, cloudB] = await Promise.all([
+                    readCounterSafe(keyA),
+                    readCounterSafe(keyB)
+                ]);
+
+                // Ensure a locally cast vote in the current session is never overwritten by a stale 0
+                const minA = pollData.userChoice === 'A' ? 1 : 0;
+                const minB = pollData.userChoice === 'B' ? 1 : 0;
+                pollData.votesA = Math.max(cloudA, minA);
+                pollData.votesB = Math.max(cloudB, minB);
+
+                savePollState();
+                renderPollUI();
+                setSyncStatus(`Live synced • ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`);
+            } catch (err) {
+                setSyncStatus('Local cache mode (offline)', true);
+            }
+        }
+
+        async function castHandoutVote(choice) {
+            if (pollData.userChoice) return;
+            const btnA = document.getElementById('vote-btn-A');
+            const btnB = document.getElementById('vote-btn-B');
+            if (btnA) btnA.disabled = true;
+            if (btnB) btnB.disabled = true;
+
+            // Optimistically record vote & open results immediately
+            pollData.userChoice = choice;
+            pollData.resultsVisible = true;
+            if (choice === 'A') pollData.votesA += 1;
+            else pollData.votesB += 1;
+            savePollState();
+            renderPollUI();
+            setSyncStatus('Syncing vote to cloud...');
+
+            try {
+                const cloudEpoch = await readCounterSafe('epoch');
+                if (cloudEpoch > pollData.sessionEpoch) {
+                    pollData.sessionEpoch = cloudEpoch;
+                }
+                const key = choice === 'A'
+                    ? `handout-a-s${pollData.sessionEpoch}`
+                    : `handout-b-s${pollData.sessionEpoch}`;
+
+                const upRes = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${key}/up`, {
+                    cache: 'no-store'
+                });
+                if (upRes.ok) {
+                    const upData = await upRes.json();
+                    const updatedCount = Number(upData.count);
+                    if (!Number.isNaN(updatedCount) && updatedCount > 0) {
+                        if (choice === 'A') pollData.votesA = updatedCount;
+                        else pollData.votesB = updatedCount;
+                    }
+                }
+
+                // Fetch the other option's current count too
+                const otherKey = choice === 'A'
+                    ? `handout-b-s${pollData.sessionEpoch}`
+                    : `handout-a-s${pollData.sessionEpoch}`;
+                const otherCount = await readCounterSafe(otherKey);
+                if (choice === 'A') pollData.votesB = otherCount;
+                else pollData.votesA = otherCount;
+
+                savePollState();
+                renderPollUI();
+                setSyncStatus(`Live synced • ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`);
+            } catch (err) {
+                setSyncStatus('Saved locally (cloud unreachable)', true);
+            }
+        }
+
+        function toggleTeacherLiveView() {
+            pollData.resultsVisible = !pollData.resultsVisible;
+            savePollState();
+            renderPollUI();
+            if (pollData.resultsVisible) {
+                fetchCloudVotes(true);
+            }
+        }
+
+        function renderPollUI() {
+            const btnA = document.getElementById('vote-btn-A');
+            const btnB = document.getElementById('vote-btn-B');
+            const liveBtn = document.getElementById('teacher-live-btn');
+            const panel = document.getElementById('vote-results-panel');
+            const lockBadge = document.getElementById('vote-lock-badge');
+            const statusMsg = document.getElementById('vote-status-msg');
+            const statA = document.getElementById('vote-stat-A');
+            const statB = document.getElementById('vote-stat-B');
+            const barA = document.getElementById('vote-bar-A');
+            const barB = document.getElementById('vote-bar-B');
+            const totalLbl = document.getElementById('vote-total-label');
+
+            if (!btnA || !btnB || !panel) return;
+
+            const total = pollData.votesA + pollData.votesB;
+            const pctA = total > 0 ? Math.round((pollData.votesA / total) * 100) : 0;
+            const pctB = total > 0 ? Math.round((pollData.votesB / total) * 100) : 0;
+
+            if (liveBtn) {
+                liveBtn.textContent = pollData.resultsVisible ? 'Hide Live View' : 'Show Live View';
+            }
+
+            if (pollData.userChoice) {
+                btnA.disabled = true;
+                btnB.disabled = true;
+                btnA.textContent = pollData.userChoice === 'A' ? '✓ Voted: Version A (03a)' : 'Vote for Version A (03a)';
+                btnB.textContent = pollData.userChoice === 'B' ? '✓ Voted: Version B (03b)' : 'Vote for Version B (03b)';
+                if (lockBadge) lockBadge.textContent = `Locked • Voted Version ${pollData.userChoice}`;
+                if (statusMsg) statusMsg.textContent = `Vote recorded for Version ${pollData.userChoice}! Live class results:`;
+            } else {
+                btnA.disabled = false;
+                btnB.disabled = false;
+                btnA.textContent = 'Vote for Version A (03a)';
+                btnB.textContent = 'Vote for Version B (03b)';
+                if (lockBadge) lockBadge.textContent = '1 Vote Per Student';
+                if (statusMsg) statusMsg.textContent = 'Teacher Live View — Combined class results across all devices:';
+            }
+
+            if (pollData.resultsVisible) {
+                panel.classList.remove('hidden');
+            } else {
+                panel.classList.add('hidden');
+            }
+
+            if (statA) statA.textContent = `${pollData.votesA} vote${pollData.votesA === 1 ? '' : 's'} (${pctA}%)`;
+            if (statB) statB.textContent = `${pollData.votesB} vote${pollData.votesB === 1 ? '' : 's'} (${pctB}%)`;
+            if (barA) barA.style.width = `${pctA}%`;
+            if (barB) barB.style.width = `${pctB}%`;
+            if (totalLbl) totalLbl.textContent = `Total class votes: ${total}`;
+        }
+
+        function promptTeacherReset() {
+            const box = document.getElementById('teacher-reset-box');
+            const inp = document.getElementById('teacher-pin-input');
+            if (box) box.classList.remove('hidden');
+            if (inp) {
+                inp.value = '';
+                inp.focus();
+            }
+        }
+
+        function cancelTeacherReset() {
+            const box = document.getElementById('teacher-reset-box');
+            if (box) box.classList.add('hidden');
+        }
+
+        async function confirmTeacherReset() {
+            const inp = document.getElementById('teacher-pin-input');
+            if (!inp || inp.value.trim() !== TEACHER_PIN) {
+                setSyncStatus('Incorrect Teacher PIN', true);
+                return;
+            }
+            cancelTeacherReset();
+            setSyncStatus('Starting fresh poll session...');
+            try {
+                const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/epoch/up`, {
+                    cache: 'no-store'
+                });
+                const data = res.ok ? await res.json() : { count: pollData.sessionEpoch + 1 };
+                pollData.sessionEpoch = Number(data.count) || (pollData.sessionEpoch + 1);
+            } catch (err) {
+                pollData.sessionEpoch += 1;
+            }
+            pollData.votesA = 0;
+            pollData.votesB = 0;
+            pollData.userChoice = null;
+            pollData.resultsVisible = true;
+            savePollState();
+            renderPollUI();
+            setSyncStatus('New poll session started (0 votes)');
+        }
+
+        function downloadVoteChartPNG() {
+            const total = pollData.votesA + pollData.votesB;
+            const pctA = total > 0 ? Math.round((pollData.votesA / total) * 100) : 0;
+            const pctB = total > 0 ? Math.round((pollData.votesB / total) * 100) : 0;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 860;
+            canvas.height = 420;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#1B365D';
+            ctx.fillRect(0, 0, canvas.width, 76);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 24px Inter, Arial, sans-serif';
+            ctx.fillText('Grade 10 Mathematics — CASIO fx-CG50 Handout Feedback', 32, 46);
+
+            ctx.fillStyle = '#334155';
+            ctx.font = '600 16px Inter, Arial, sans-serif';
+            ctx.fillText(`Total Responses Recorded: ${total}   |   Date: ${new Date().toLocaleDateString()}`, 32, 112);
+
+            const drawBarRow = (yTop, title, votes, pct, color) => {
+                ctx.fillStyle = '#0f172a';
+                ctx.font = 'bold 18px Inter, Arial, sans-serif';
+                ctx.fillText(title, 32, yTop);
+
+                ctx.fillStyle = '#e2e8f0';
+                ctx.fillRect(32, yTop + 14, 620, 38);
+
+                ctx.fillStyle = color;
+                ctx.fillRect(32, yTop + 14, Math.round(620 * (pct / 100)), 38);
+
+                ctx.fillStyle = '#0f172a';
+                ctx.font = 'bold 18px Inter, Arial, sans-serif';
+                ctx.fillText(`${votes} (${pct}%)`, 672, yTop + 40);
+            };
+
+            drawBarRow(165, 'Version A (03a): Screenshot Walkthrough Handout', pollData.votesA, pctA, '#2563eb');
+            drawBarRow(275, 'Version B (03b): Step Table & Worked Example Guide', pollData.votesB, pctB, '#0d9488');
+
+            const link = document.createElement('a');
+            link.download = 'CASIO_Handout_Student_Votes.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function downloadVoteCSV() {
+            const total = pollData.votesA + pollData.votesB;
+            const pctA = total > 0 ? Math.round((pollData.votesA / total) * 100) : 0;
+            const pctB = total > 0 ? Math.round((pollData.votesB / total) * 100) : 0;
+            const csv = [
+                'Handout Version,Votes,Percentage',
+                `"Version A (03a Screenshot Guide)",${pollData.votesA},${pctA}%`,
+                `"Version B (03b Step Table + Example)",${pollData.votesB},${pctB}%`,
+                `"Total",${total},100%`
+            ].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'CASIO_Handout_Student_Votes.csv';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
         renderAllTables();
         renderCasioSim();
         updateNavigation();
+        loadPollState();
+        setInterval(() => {
+            const panel = document.getElementById('vote-results-panel');
+            if (panel && !panel.classList.contains('hidden')) {
+                fetchCloudVotes(false);
+            }
+        }, 8000);
     </script>
 </body>
 </html>
