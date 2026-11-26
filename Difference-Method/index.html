@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequences: The Difference Method — Grade 10 Mathematics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        .math-font {
+            font-family: 'Times New Roman', Georgia, serif;
+        }
+        .mono-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .slide {
+            display: none;
+            animation: fadeIn 0.25s ease-out;
+        }
+        .slide.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Smooth collapsible working box transition */
+        .collapsible-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-out, opacity 0.25s ease-out, margin 0.25s ease-out;
+            opacity: 0;
+        }
+        .collapsible-content.open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            margin-top: 0.75rem;
+        }
+        .collapsible-inner {
+            overflow: hidden;
+        }
+        /* Custom scrollbar for slide body if content expands */
+        .slide-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .slide-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        .slide-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+        .slide-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Casio keycap style */
+        .keycap {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: #1e293b;
+            color: #f8fafc;
+            border-radius: 0.375rem;
+            border-bottom: 3px solid #020617;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .keycap-fn {
+            background: #334155;
+            color: #fde047;
+            border-bottom-color: #0f172a;
+        }
+        /* Keep subscripts compact so they never push line-height apart */
+        sub, sup {
+            font-size: 0.72em;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline;
+        }
+        sup { top: -0.45em; }
+        sub { bottom: -0.22em; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between select-none sm:select-auto">
+
+    <!-- Top Navigation & Classroom Controls Bar -->
+    <header class="bg-slate-900 text-white border-b border-slate-700 px-4 sm:px-8 py-3 flex flex-wrap items-center justify-between gap-3 sticky top-0 z-50 shadow-md">
+        <div class="flex items-center gap-3">
+            <div class="bg-blue-600 text-white font-bold px-2.5 py-1 rounded-lg text-sm tracking-wide">
+                MYP Gr10
+            </div>
+            <h1 class="font-bold text-base sm:text-lg tracking-tight text-slate-100">
+                Sequences: The Difference Method <span class="hidden md:inline text-slate-400 font-normal">| Lesson 1: Linear &amp; Quadratic</span>
+            </h1>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Reset All Reveals on Current Slide -->
+            <button onclick="resetCurrentSlide()" title="Hide all revealed boxes on this slide"
+                class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs sm:text-sm font-medium border border-slate-600 transition flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span class="hidden sm:inline">Reset Reveals</span>
+            </button>
+
+            <!-- Slide Jump Dropdown -->
+            <select id="slideSelector" onchange="goToSlide(parseInt(this.value))" aria-label="Jump to slide"
+                class="bg-slate-800 text-white text-xs sm:text-sm rounded-lg px-3 py-1.5 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
+                <option value="0">1. Title Slide</option>
+                <option value="1">2. Learning Objectives</option>
+                <option value="2">3. Investigation: Linear</option>
+                <option value="3">4. Worked Ex 1: Linear</option>
+                <option value="4">5. Worked Ex 2: Quadratic #1</option>
+                <option value="5">6. CASIO fx-CG50 Guide</option>
+                <option value="6">7. Worked Ex 3: Student Try</option>
+                <option value="7">8. Quick Check / Plenary</option>
+                <option value="8">9. Class Practice Launch</option>
+            </select>
+
+            <!-- Prev / Counter / Next -->
+            <div class="flex items-center bg-slate-800 rounded-lg border border-slate-600 overflow-hidden">
+                <button id="prevBtn" onclick="changeSlide(-1)" class="px-3 py-1.5 hover:bg-slate-700 disabled:opacity-40 disabled:hover:bg-slate-800 transition font-bold text-sm" aria-label="Previous Slide">
+                    &larr;
+                </button>
+                <span id="slideCounter" class="px-3 py-1.5 text-xs sm:text-sm font-semibold text-blue-300 border-x border-slate-700">
+                    1 / 9
+                </span>
+                <button id="nextBtn" onclick="changeSlide(1)" class="px-3 py-1.5 hover:bg-slate-700 disabled:opacity-40 disabled:hover:bg-slate-800 transition font-bold text-sm" aria-label="Next Slide">
+                    &rarr;
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Slide Stage -->
+    <main class="flex-1 flex items-center justify-center p-3 sm:p-6">
+        <div class="w-full max-w-6xl bg-white rounded-2xl shadow-2xl border border-slate-200 min-h-[78vh] flex flex-col overflow-hidden">
+
+            <!-- ===================================================================== -->
+            <!-- SLIDE 1: TITLE SLIDE                                                  -->
+            <!-- ===================================================================== -->
+            <section class="slide active flex-1 flex-col justify-between p-8 sm:p-14 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white" data-slide="0">
+                <div class="flex items-center justify-between">
+                    <span class="px-4 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-sm font-semibold tracking-wider uppercase">
+                        Grade 10 Mathematics • Sequences &amp; Series
+                    </span>
+                    <span class="text-slate-400 text-sm font-medium">Bavarian International School</span>
+                </div>
+
+                <div class="my-auto py-8">
+                    <h2 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight mb-6">
+                        Sequences:<br>
+                        <span class="text-blue-400">The Difference Method</span>
+                    </h2>
+                    <p class="text-xl sm:text-2xl text-slate-300 max-w-3xl leading-relaxed font-normal">
+                        Classifying <span class="text-white font-semibold">Linear</span> and <span class="text-amber-300 font-semibold">Quadratic</span> sequences using difference tables, and finding general rules with the <span class="text-emerald-300 font-semibold">CASIO fx-CG50</span>.
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-slate-700/80 text-sm text-slate-300">
+                    <div class="flex items-center gap-6">
+                        <span><strong>Lesson 1 Focus:</strong> Linear (&Delta;<sub>1</sub>) &amp; Quadratic (&Delta;<sub>2</sub>)</span>
+                        <span class="hidden sm:inline text-slate-500">|</span>
+                        <span class="hidden sm:inline text-slate-400">Next Lesson: Cubic Sequences (&Delta;<sub>3</sub>)</span>
+                    </div>
+                    <button onclick="changeSlide(1)" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition flex items-center gap-2">
+                        Start Lesson <span>&rarr;</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- ===================================================================== -->
+            <!-- SLIDE 2: LEARNING OBJECTIVES & THE BIG IDEA                           -->
+            <!-- ===================================================================== -->
+            <section class="slide flex-1 flex-col p-6 sm:p-10 slide-scroll overflow-y-auto" data-slide="1">
+                <div class="border-b border-slate-200 pb-4 mb-6 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Overview</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Learning Objectives &amp; The Big Idea</h2>
+                    </div>
+                    <span class="text-sm font-semibold text-slate-400">Slide 2 of 9</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 items-stretch">
+                    <!-- Left Column: Classification Rules -->
+                    <div class="bg-[#EEF4FA] rounded-2xl p-6 border border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold text-[#1B365D] mb-3 flex items-start gap-2.5 leading-snug">
+                                <span class="w-7 h-7 rounded-lg bg-[#1B365D] text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</span>
+                                <span class="leading-snug">Construct a Difference Table (<span class="whitespace-nowrap">&Delta;<sub>1</sub></span>, <span class="whitespace-nowrap">&Delta;<sub>2</sub></span>) to Classify:</span>
+                            </h3>
+                            <p class="text-slate-700 text-base mb-4">
+                                Subtract consecutive terms step-by-step. Whichever difference row becomes <strong>constant</strong> tells us the degree of the formula:
+                            </p>
+
+                            <div class="space-y-3">
+                                <div class="p-4 rounded-xl bg-white border-l-4 border-[#007791] shadow-sm">
+                                    <div class="font-bold text-[#1B365D] text-lg">1st Difference (&Delta;<sub>1</sub>) Constant &rarr; LINEAR</div>
+                                    <div class="text-slate-700 mt-1 text-base">General form: <span class="math-font text-xl font-bold text-slate-900"><i>u</i><sub><i>n</i></sub> = <i>an</i> + <i>b</i></span></div>
+                                </div>
+
+                                <div class="p-4 rounded-xl bg-white border-l-4 border-[#E0B458] shadow-sm">
+                                    <div class="font-bold text-amber-900 text-lg">2nd Difference (&Delta;<sub>2</sub>) Constant &rarr; QUADRATIC</div>
+                                    <div class="text-slate-700 mt-1 text-base">General form: <span class="math-font text-xl font-bold text-slate-900"><i>u</i><sub><i>n</i></sub> = <i>an</i><sup>2</sup> + <i>bn</i> + <i>c</i></span></div>
+                                </div>
+
+                                <div class="p-4 rounded-xl bg-slate-100 border-l-4 border-slate-400 opacity-85">
+                                    <div class="font-bold text-slate-700 text-base">3rd Difference (&Delta;<sub>3</sub>) Constant &rarr; CUBIC <span class="text-xs uppercase bg-slate-200 text-slate-600 px-2 py-0.5 rounded ml-2">Next Lesson</span></div>
+                                    <div class="text-slate-600 mt-0.5 text-sm">General form: <span class="math-font text-base"><i>u</i><sub><i>n</i></sub> = <i>an</i><sup>3</sup> + <i>bn</i><sup>2</sup> + <i>cn</i> + <i>d</i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Our Game Plan & Why It Works -->
+                    <div class="bg-[#1B365D] text-white rounded-2xl p-6 flex flex-col justify-between shadow-lg">
+                        <div>
+                            <h3 class="text-lg font-bold text-sky-300 mb-3 flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-[#007791] text-white flex items-center justify-center text-sm font-bold">2</span>
+                                Why Use the Difference Method &amp; How We Find <span class="math-font italic">u<sub>n</sub></span>
+                            </h3>
+                            <p class="text-slate-200 text-sm sm:text-base mb-4 leading-relaxed">
+                                Row <strong class="text-red-300">&Delta;<sub>1</sub></strong> measures the rate of change between terms, while Row <strong class="text-emerald-300">&Delta;<sub>2</sub></strong> measures how fast that change itself is changing.
+                            </p>
+
+                            <div class="space-y-4">
+                                <div class="bg-white/10 rounded-xl p-4 border border-white/15">
+                                    <div class="text-xs uppercase tracking-wider text-sky-300 font-bold mb-1">If Linear (&Delta;<sub>1</sub> constant)</div>
+                                    <div class="text-lg font-bold text-white mb-1">Use Your Known Algebraic Method</div>
+                                    <p class="text-sm text-slate-200">
+                                        Use <span class="math-font text-base text-white"><i>u</i><sub><i>n</i></sub> = <i>u</i><sub>1</sub> + (<i>n</i> &minus; 1)<i>d</i></span> (or check with GDC Linear Regression).
+                                    </p>
+                                </div>
+
+                                <div class="bg-teal-500/25 rounded-xl p-4 border border-teal-400/40">
+                                    <div class="text-xs uppercase tracking-wider text-teal-200 font-bold mb-1">If Quadratic (&Delta;<sub>2</sub> constant)</div>
+                                    <div class="text-lg font-bold text-white mb-1">Use the CASIO fx-CG50 GDC</div>
+                                    <p class="text-sm text-slate-100">
+                                        Enter <span class="mono-font text-amber-300"><i>n</i></span> into List 1 and <span class="mono-font text-amber-300"><i>u</i><sub><i>n</i></sub></span> into List 2, then run Quadratic Regression (<span class="mono-font text-amber-300">X<sup>2</sup></span>).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-white/15 text-sm text-sky-200 flex items-center justify-between">
+                            <span>Ready to investigate linear differences?</span>
+                            <button onclick="changeSlide(1)" class="px-4 py-2 bg-[#007791] hover:bg-teal-600 rounded-lg font-semibold text-white transition">
+                                Next: Investigation &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================================================================== -->
+            <!-- SLIDE 3: INVESTIGATION - PART 1 (LINEAR SEQUENCES)                    -->
+            <!-- ===================================================================== -->
+            <section class="slide flex-1 flex-col p-6 sm:p-8 slide-scroll overflow-y-auto" data-slide="2">
+                <div class="border-b border-slate-200 pb-3 mb-4 flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Investigation — Part 1</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Exploring Linear Sequences</h2>
+                    </div>
+                    <span class="text-sm font-semibold text-slate-400">Slide 3 of 9</span>
+                </div>
+
+                <!-- Worked Example Box from Investigation Sheet -->
+                <div class="bg-[#FDF6E7] border-2 border-[#E0B458] rounded-xl p-4 mb-5">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="lg:w-5/12">
+                            <span class="inline-block px-2.5 py-0.5 rounded bg-[#E0B458]/30 text-amber-950 text-xs font-bold uppercase mb-1">Model Example</span>
+                            <p class="text-slate-800 text-base leading-snug">
+                                Consider the linear sequence <span class="math-font font-bold text-lg"><i>u</i><sub><i>n</i></sub> = 3<i>n</i> + 2</span> where <span class="math-font"><i>u</i><sub>1</sub> = 5, <i>u</i><sub>2</sub> = 8, <i>u</i><sub>3</sub> = 11, <i>u</i><sub>4</sub> = 14, <i>u</i><sub>5</sub> = 17</span>.
+                            </p>
+                            <p class="text-slate-700 text-sm mt-1">
+                                Each red V connects two adjacent terms to their first difference <span class="font-bold text-[#D92B2B]">&Delta;<sub>1</sub></span> below.
+                            </p>
+                        </div>
+                        <div class="lg:w-7/12 flex justify-center">
+                            <!-- SVG Table: Example u_n = 3n + 2 -->
+                            <div id="svg-inv-example" class="w-full max-w-xl"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Practice 1(a) and 1(b) -->
+                <div class="mb-3">
+                    <h3 class="text-lg font-bold text-slate-800 mb-3">
+                        Task 1: Construct a difference table for each linear sequence below:
+                    </h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                        <!-- 1(a) -->
+                        <div class="bg-[#EEF4FA] border border-slate-200 rounded-xl p-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                <span class="font-bold text-[#1B365D] text-lg">1(a) &nbsp; <span class="math-font text-xl"><i>u</i><sub><i>n</i></sub> = 4<i>n</i> + 3</span></span>
+                                <button id="btn-inv-1a" onclick="toggleInvTable('1a', this)"
+                                    class="px-3 py-1 rounded-lg bg-[#007791] hover:bg-teal-700 text-white font-bold text-xs shadow transition">
+                                    Reveal 1(a) Table
+                                </button>
+                            </div>
+                            <div id="svg-inv-1a" class="w-full"></div>
+                        </div>
+
+                        <!-- 1(b) -->
+                        <div class="bg-[#EEF4FA] border border-slate-200 rounded-xl p-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                <span class="font-bold text-[#1B365D] text-lg">1(b) &nbsp; <span class="math-font text-xl"><i>u</i><sub><i>n</i></sub> = &minus;3<i>n</i> + 7</span></span>
+                                <button id="btn-inv-1b" onclick="toggleInvTable('1b', this)"
+                                    class="px-3 py-1 rounded-lg bg-[#007791] hover:bg-teal-700 text-white font-bold text-xs shadow transition">
+                                    Reveal 1(b) Table
+                                </button>
+                            </div>
+                            <div id="svg-inv-1b" class="w-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 Prompt & Collapsible Reveal -->
+                <div class="mt-2 bg-blue-50 border border-blue-200 rounded-xl p-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <p class="text-base sm:text-lg font-semibold text-slate-800">
+                            <span class="text-[#1B365D] font-extrabold">Task 2 — Copy and complete:</span> For the linear sequence <span class="math-font font-bold"><i>u</i><sub><i>n</i></sub> = <i>an</i> + <i>b</i></span>, the values of <span class="font-bold text-[#D92B2B]">&Delta;<sub>1</sub></span> are __________________________.
+                        </p>
+                        <button onclick="toggleReveal('inv-sol-box', this, onRevealInvestigation)"
+                            class="px-4 py-2 rounded-xl bg-[#1B365D] hover:bg-blue-900 text-white font-bold text-sm shadow transition shrink-0">
+                            Reveal Generalization
+                        </button>
+                    </div>
+
+                    <div id="inv-sol-box" class="collapsible-content">
+                        <div class="collapsible-inner">
+                            <div class="pt-3 border-t border-blue-200 text-slate-800 space-y-1.5 text-base">
+                                <p><strong>1(a)</strong> Terms: <span class="mono-font font-bold">7, 11, 15, 19, 23</span> &rarr; Constant first difference <span class="font-bold text-[#D92B2B]">&Delta;<sub>1</sub> = 4</span>.</p>
+                                <p><strong>1(b)</strong> Terms: <span class="mono-font font-bold">4, 1, &minus;2, &minus;5, &minus;8</span> &rarr; Constant first difference <span class="font-bold text-[#D92B2B]">&Delta;<sub>1</sub> = &minus;3</span>.</p>
+                                <p class="bg-white p-3 rounded-lg border border-blue-200 text-[#1B365D] font-semibold mt-2">
+                                    <strong>Conclusion (Task 2):</strong> For the linear sequence <span class="math-font font-bold"><i>u</i><sub><i>n</i></sub> = <i>an</i> + <i>b</i></span>, the values of <span class="text-[#D92B2B] font-bold">&Delta;<sub>1</sub></span> are <span class="underline decoration-[#007791] decoration-2">constant and equal to <i>a</i></span> (the common difference <i>d</i>).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================================================================== -->
+            <!-- SLIDE 4: WORKED EXAMPLE 1 (LINEAR SEQUENCE)                           -->
+            <!-- ===================================================================== -->
+            <section class="slide flex-1 flex-col p-6 sm:p-10 slide-scroll overflow-y-auto" data-slide="3">
+                <div class="border-b border-slate-200 pb-3 mb-5 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Worked Example 1 • Linear</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Classifying &amp; Finding a Linear Formula</h2>
+                    </div>
+                    <span class="text-sm font-semibold text-slate-400">Slide 4 of 9</span>
+                </div>
+
+                <!-- Problem Statement -->
+                <div class="bg-slate-900 text-white rounded-2xl p-5 mb-6 shadow">
+                    <div class="text-xs uppercase tracking-wider text-blue-300 font-bold mb-1">Problem</div>
+                    <p class="text-xl sm:text-2xl font-medium">
+                        Use a difference table to determine whether the sequence <span class="mono-font text-amber-300 font-bold">5, 9, 13, 17, 21, &hellip;</span> is linear or quadratic, then find its general formula <span class="math-font italic">u<sub>n</sub></span>.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <!-- Left: Interactive Difference Table -->
+                    <div class="lg:col-span-7 bg-[#EEF4FA] border border-slate-200 rounded-2xl p-5">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <h3 class="font-bold text-[#1B365D] text-lg">Step 1: Difference Table</h3>
+                            <div class="flex gap-2">
+                                <button id="we1-btn1" onclick="toggleWe1Step(1, this)"
+                                    class="px-3 py-1.5 rounded-xl bg-[#D92B2B] hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow transition">
+                                    Reveal &Delta;<sub>1</sub>
+                                </button>
+                                <button id="we1-btn2" onclick="toggleWe1Step(2, this)"
+                                    class="px-3 py-1.5 rounded-xl bg-[#0F766E] hover:bg-teal-800 text-white font-bold text-xs sm:text-sm shadow transition">
+                                    Reveal &Delta;<sub>2</sub>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="svg-we1" class="w-full"></div>
+                        <div id="we1-step1-note" class="collapsible-content">
+                            <div class="collapsible-inner">
+                                <div class="p-3 rounded-xl bg-blue-100/80 border border-blue-300 text-[#1B365D] font-semibold text-base">
+                                    Since <span class="text-[#D92B2B] font-bold">&Delta;<sub>1</sub> = 4</span> is already constant on the first row (and &Delta;<sub>2</sub> = 0), this sequence is <strong>LINEAR</strong> (<span class="math-font"><i>u</i><sub><i>n</i></sub> = <i>an</i> + <i>b</i></span>).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Step 2 Algebraic Working -->
+                    <div class="lg:col-span-5 bg-[#EEF4FA] border border-slate-200 rounded-2xl p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-[#1B365D] text-lg">Step 2: Find <span class="math-font italic">u<sub>n</sub></span> (Algebra)</h3>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button id="we1-pad-btn" onclick="toggleWe1Pad(this)"
+                                    class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow transition">
+                                    Working Pad
+                                </button>
+                                <button id="we1-alg-btn" onclick="toggleWe1Algebra(this)"
+                                    class="px-3.5 py-1.5 rounded-xl bg-[#0F766E] hover:bg-teal-800 text-white font-bold text-xs sm:text-sm shadow transition">
+                                    Show Algebraic Solution
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Collapsible Working Pad (Black, Green, Red, Yellow pens + Eraser) -->
+                        <div id="we1-pad-box" class="collapsible-content">
+                            <div class="collapsible-inner">
+                                <div class="bg-white rounded-xl p-3 border-2 border-indigo-200 shadow-sm space-y-2.5">
+                                    <div class="flex flex-wrap items-center justify-between gap-2">
+                                        <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Pen colors and eraser">
+                                            <span class="text-xs font-bold text-slate-600">Tool:</span>
+                                            <button id="pen-black" onclick="setPadColor('#0f172a', this)" title="Black pen"
+                                                class="pad-color-btn w-6 h-6 rounded-full bg-[#0f172a] ring-2 ring-offset-1 ring-indigo-600 transition"></button>
+                                            <button id="pen-green" onclick="setPadColor('#059669', this)" title="Green pen"
+                                                class="pad-color-btn w-6 h-6 rounded-full bg-[#059669] hover:scale-105 transition"></button>
+                                            <button id="pen-red" onclick="setPadColor('#dc2626', this)" title="Red pen"
+                                                class="pad-color-btn w-6 h-6 rounded-full bg-[#dc2626] hover:scale-105 transition"></button>
+                                            <button id="pen-yellow" onclick="setPadColor('#eab308', this)" title="Yellow pen"
+                                                class="pad-color-btn w-6 h-6 rounded-full bg-[#eab308] hover:scale-105 transition"></button>
+                                            <button id="pad-eraser-btn" onclick="setPadEraser(this)" title="Eraser"
+                                                class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs border border-rose-300 transition flex items-center gap-1">
+                                                <span>Eraser</span>
+                                            </button>
+                                        </div>
+                                        <div class="flex items-center gap-1.5">
+                                            <button onclick="clearWe1Pad()"
+                                                class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs border border-slate-300 transition">
+                                                Clear Pad
+                                            </button>
+                                            <button onclick="hideWe1Pad()"
+                                                class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition">
+                                                Done
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <canvas id="we1-canvas" height="230"
+                                        class="w-full h-[230px] rounded-lg border border-slate-300 bg-[#fffef9] touch-none cursor-crosshair block"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="we1-step2-box" class="collapsible-content">
+                            <div class="collapsible-inner">
+                                <div class="bg-white rounded-xl p-4 border border-slate-200 space-y-2.5 text-base text-slate-800 shadow-sm">
+                                    <div>• First term: <span class="math-font font-bold"><i>u</i><sub>1</sub> = 5</span></div>
+                                    <div>• Common difference: <span class="math-font font-bold"><i>d</i> = &Delta;<sub>1</sub> = 4</span></div>
+                                    <div class="pt-1 border-t border-slate-100 math-font text-lg">
+                                        <i>u</i><sub><i>n</i></sub> = <i>u</i><sub>1</sub> + (<i>n</i> &minus; 1)<i>d</i>
+                                    </div>
+                                    <div class="math-font text-lg">
+                                        <i>u</i><sub><i>n</i></sub> = 5 + (<i>n</i> &minus; 1)(4)
+                                    </div>
+                                    <div class="math-font text-lg">
+                                        <i>u</i><sub><i>n</i></sub> = 5 + 4<i>n</i> &minus; 4
+                                    </div>
+                                    <div class="p-3 rounded-lg bg-emerald-50 border border-emerald-300 text-[#0F766E] font-bold text-xl math-font">
+                                        <i>u</i><sub><i>n</i></sub> = 4<i>n</i> + 1
+                                    </div>
+                                    <div class="text-xs text-slate-500 pt-1">
+                                        <strong>Check (<i>n</i> = 5):</strong> <i>u</i><sub>5</sub> = 4(5) + 1 = 21 &#10003;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================================================================== -->
+            <!-- SLIDE 5: WORKED EXAMPLE 2 (QUADRATIC #1 - FROM IPAD NOTES)            -->
+            <!-- ===================================================================== -->
+            <section class="slide flex-1 flex-col p-6 sm:p-10 slide-scroll overflow-y-auto" data-slide="4">
+                <div class="border-b border-slate-200 pb-3 mb-5 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Worked Example 2 • Quadratic</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Quadratic Sequence (From Class Notes)</h2>
+                    </div>
+                    <span class="text-sm font-semibold text-slate-400">Slide 5 of 9</span>
+                </div>
+
+                <!-- Problem Statement -->
+                <div class="bg-slate-900 text-white rounded-2xl p-5 mb-5 shadow">
+                    <div class="text-xs uppercase tracking-wider text-amber-300 font-bold mb-1">Problem</div>
+                    <p class="text-xl sm:text-2xl font-medium">
+                        Find the general term <span class="math-font italic">u<sub>n</sub></span> for the sequence <span class="mono-font text-amber-300 font-bold">4, 9, 18, 31, 48, 69</span> by first using the table of differences.
+                    </p>
+                </div>
+
+                <!-- Progressive Reveal Controls -->
+                <div class="flex flex-wrap items-center gap-3 mb-4">
+                    <button id="we2-btn1" onclick="toggleWe2Step(1, this)"
+                        class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-sm shadow transition">
+                        1. Reveal &Delta;<sub>1</sub> Row
+                    </button>
+                    <button id="we2-btn2" onclick="toggleWe2Step(2, this)"
+                        class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm shadow transition">
+                        2. Reveal &Delta;<sub>2</sub> Row
+                    </button>
+                    <button id="we2-btn3" onclick="toggleReveal('we2-gdc-box', this)"
+                        class="px-4 py-2 rounded-xl bg-[#0F766E] hover:bg-teal-800 text-white font-bold text-sm shadow transition">
+                        3. Show Table Conclusion
+                    </button>
+                </div>
+
+                <!-- Difference Table -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-4">
+                    <div id="svg-we2" class="w-full max-w-4xl mx-auto"></div>
+                </div>
+
+                <!-- Collapsible Explanation (Teases GDC next without giving away the answer yet) -->
+                <div id="we2-gdc-box" class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="space-y-1.5 text-slate-800 text-base">
+                                <div class="text-xs uppercase font-bold text-emerald-800">Table Interpretation</div>
+                                <div>• <span class="text-red-700 font-bold">&Delta;<sub>1</sub>:</span> 5, 9, 13, 17, 21 (not constant &rarr; not linear)</div>
+                                <div>• <span class="text-emerald-700 font-bold">&Delta;<sub>2</sub>:</span> 4, 4, 4, 4 (<strong>constant on 2nd row!</strong> &rarr; Quadratic: <span class="math-font font-bold">u<sub>n</sub> = an<sup>2</sup> + bn + c</span>)</div>
+                                <div class="pt-1 font-semibold text-[#1B365D]">
+                                    We will now look at how to solve this using the <strong>CASIO fx-CG50</strong>!
+                                </div>
+                            </div>
+                            <button onclick="changeSlide(1)"
+                                class="px-4 py-2.5 rounded-xl bg-[#1B365D] hover:bg-blue-900 text-white font-bold text-sm shadow transition shrink-0">
+                                Next: CASIO fx-CG50 Steps &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================================================================== -->
+            <!-- SLIDE 6: CASIO FX-CG50 STEP-BY-STEP WALKTHROUGH & INTERACTIVE SCREEN  -->
+            <!-- ===================================================================== -->
+            <section class="slide flex-1 flex-col p-6 sm:p-8 slide-scroll overflow-y-auto" data-slide="5">
+                <div class="border-b border-slate-200 pb-3 mb-4 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">GDC Reference</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Using the CASIO fx-CG50 to Find <span class="math-font italic">u<sub>n</sub></span></h2>
+                    </div>
+                    <span class="text-sm font-semibold text-slate-400">Slide 6 of 9</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <!-- Left 7 cols: Step-by-step Keystrokes -->
+                    <div class="lg:col-span-7 space-y-2.5 text-sm sm:text-base">
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-slate-800 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                            <div>
+                                Press <span class="keycap">MENU</span> and select <span class="keycap">2</span> (<strong>STAT</strong>).
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-slate-800 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                            <div>
+                                Clear old lists: press <span class="keycap keycap-fn">F6</span> (&triangleright;) &rarr; <span class="keycap keycap-fn">F4</span> (DEL-A) &rarr; <span class="keycap keycap-fn">F1</span> (Yes).
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-slate-800 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                            <div>
+                                In <strong>List 1</strong>, type term positions <span class="mono-font font-bold">1, 2, 3, 4, 5, 6</span> pressing <span class="keycap">EXE</span> after each.
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-slate-800 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
+                            <div>
+                                Arrow right <span class="keycap">&blacktriangleright;</span> to <strong>List 2</strong> and enter the sequence terms <span class="math-font font-bold">u<sub>n</sub></span> (for Example 2: <span class="mono-font font-bold">4, 9, 18, 31, 48, 69</span>).
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-slate-800 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">5</span>
+                            <div>
+                                Press <span class="keycap keycap-fn">F2</span> (<strong>CALC</strong>). Check <span class="keycap keycap-fn">F6</span> (SET) so <em>2Var XList = List1</em> and <em>YList = List2</em>, then <span class="keycap">EXIT</span> and press <span class="keycap keycap-fn">F3</span> (<strong>REG</strong>).
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-slate-800 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">5</span>
+                            <div>
+                                Press <span class="keycap keycap-fn">F2</span> (<strong>CALC</strong>). Check <span class="keycap keycap-fn">F6</span> (SET) so <em>2Var XList = List1</em> and <em>YList = List2</em>.
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">6</span>
+                            <div>
+                                Press <span class="keycap keycap-fn">F3</span> (<strong>REG</strong>), then choose the model matching your &Delta; table:
+                                <div class="mt-1.5 space-y-1 text-sm">
+                                    <div>• Constant <strong>&Delta;<sub>1</sub></strong> (Linear) &rarr; <span class="keycap keycap-fn">F1</span> (<strong>X</strong>) &rarr; <span class="math-font font-bold">y = ax + b</span></div>
+                                    <div>• Constant <strong>&Delta;<sub>2</sub></strong> (Quadratic) &rarr; <span class="keycap keycap-fn">F3</span> (<strong>X<sup>2</sup></strong>) &rarr; <span class="math-font font-bold">y = ax<sup>2</sup> + bx + c</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right 5 cols: Interactive CASIO fx-CG50 Screen Inspector -->
+                    <div class="lg:col-span-5 bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 rounded-2xl p-4 sm:p-5 text-white shadow-2xl border-4 border-slate-600">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-extrabold uppercase tracking-widest text-slate-200">CASIO</span>
+                                <span class="text-[11px] font-semibold uppercase tracking-wider text-sky-400">fx-CG50</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <button onclick="loadPresetToSim([1,2,3,4,5,6], [4,9,18,31,48,69], 'Ex. 2 (4,9,18,31,48,69)')" class="px-2 py-1 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition">
+                                    Load Ex. 2
+                                </button>
+                                <button onclick="loadPresetToSim([1,2,3,4,5,6], [2,5,12,23,38,57], 'Ex. 3 (2,5,12,23,38,57)')" class="px-2 py-1 rounded bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition">
+                                    Load Ex. 3
+                                </button>
+                                <button onclick="loadPresetToSim([1,2,3,4,5], [5,9,13,17,21], 'Ex. 1 (5,9,13,17,21)')" class="px-2 py-1 rounded bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs transition">
+                                    Load Ex. 1
+                                </button>
+                                <button onclick="simClearAll()" class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-xs transition">
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Simulated LCD Screen (No duplicate bottom softkey strip; labels sit directly above F1-F6) -->
+                        <div id="gdc-lcd" class="bg-[#e8f0e6] text-slate-900 rounded-lg p-3 mono-font border-4 border-slate-950 shadow-inner min-h-[215px] flex flex-col justify-between">
+                            <div id="gdc-screen-body" class="flex-1 flex flex-col justify-between">
+                                <!-- Populated dynamically by renderCasioSim() -->
+                            </div>
+                            <div id="gdc-softkeys" class="hidden"></div>
+                        </div>
+                        <p id="gdc-caption" class="mt-2 text-xs text-slate-300 leading-snug">
+                            Enter values with <strong>EXE</strong>, then press <strong>F2 (CALC)</strong>.
+                        </p>
+
+                        <!-- Authentic CASIO fx-CG50 Keypad Layout -->
+                        <div class="mt-3 bg-slate-900/95 rounded-2xl p-3 border border-slate-700 space-y-2.5">
+                            <div class="flex items-center justify-between text-xs text-slate-300">
+                                <span>Target: <strong id="gdc-target-col" class="text-amber-300">List 1</strong> row <strong id="gdc-target-row" class="text-amber-300">#1</strong></span>
+                                <span id="gdc-status-badge" class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold">STAT Editor Ready</span>
+                            </div>
+
+                            <!-- Input bar for typing numbers + EXE -->
+                            <div class="flex gap-1.5">
+                                <input id="gdc-num-input" type="text" placeholder="Type value (e.g. 4 or -3)..."
+                                    onkeydown="if(event.key==='Enter'){simPressExe();}"
+                                    class="flex-1 bg-slate-950 text-white text-xs sm:text-sm mono-font px-2.5 py-1.5 rounded-lg border border-slate-600 focus:outline-none focus:border-amber-400">
+                                <button onclick="simPressExe()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs sm:text-sm shadow transition">
+                                    EXE
+                                </button>
+                            </div>
+
+                            <!-- F1-F6 Function Keys with CASIO Softkey Labels Directly Above Each Key -->
+                            <div class="grid grid-cols-6 gap-1 text-xs mono-font items-end">
+                                <div class="flex flex-col items-center gap-1">
+                                    <span id="fn-label-1" class="w-full text-center text-[10px] font-bold px-1 py-0.5 rounded bg-slate-950 text-amber-300 border border-slate-600 truncate">GRPH</span>
+                                    <button onclick="simPressFn(1)" class="w-full py-1.5 rounded-full bg-slate-600 hover:bg-slate-500 text-white font-bold border border-slate-400/50 shadow">F1</button>
+                                </div>
+                                <div class="flex flex-col items-center gap-1">
+                                    <span id="fn-label-2" class="w-full text-center text-[10px] font-bold px-1 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/50 truncate">CALC</span>
+                                    <button onclick="simPressFn(2)" class="w-full py-1.5 rounded-full bg-slate-600 hover:bg-slate-500 text-white font-bold border border-slate-400/50 shadow">F2</button>
+                                </div>
+                                <div class="flex flex-col items-center gap-1">
+                                    <span id="fn-label-3" class="w-full text-center text-[10px] font-bold px-1 py-0.5 rounded bg-slate-950 text-amber-300 border border-slate-600 truncate">TEST</span>
+                                    <button onclick="simPressFn(3)" class="w-full py-1.5 rounded-full bg-slate-600 hover:bg-slate-500 text-white font-bold border border-slate-400/50 shadow">F3</button>
+                                </div>
+                                <div class="flex flex-col items-center gap-1">
+                                    <span id="fn-label-4" class="w-full text-center text-[10px] font-bold px-1 py-0.5 rounded bg-slate-950 text-amber-300 border border-slate-600 truncate">INTR</span>
+                                    <button onclick="simPressFn(4)" class="w-full py-1.5 rounded-full bg-slate-600 hover:bg-slate-500 text-white font-bold border border-slate-400/50 shadow">F4</button>
+                                </div>
+                                <div class="flex flex-col items-center gap-1">
+                                    <span id="fn-label-5" class="w-full text-center text-[10px] font-bold px-1 py-0.5 rounded bg-slate-950 text-amber-300 border border-slate-600 truncate">LIST</span>
+                                    <button onclick="simPressFn(5)" class="w-full py-1.5 rounded-full bg-slate-600 hover:bg-slate-500 text-white font-bold border border-slate-400/50 shadow">F5</button>
+                                </div>
+                                <div class="flex flex-col items-center gap-1">
+                                    <span id="fn-label-6" class="w-full text-center text-[10px] font-bold px-1 py-0.5 rounded bg-slate-950 text-amber-300 border border-slate-600 truncate">▷</span>
+                                    <button onclick="simPressFn(6)" class="w-full py-1.5 rounded-full bg-slate-600 hover:bg-slate-500 text-white font-bold border border-slate-400/50 shadow">F6</button>
+                                </div>
+                            </div>
+
+                            <!-- Upper Casio Cluster: MENU & EXIT on left/center-right, directional pad on right -->
+                            <div class="grid grid-cols-12 gap-2 items-center pt-1">
+                                <div class="col-span-8 grid grid-cols-2 gap-1.5 text-xs mono-font">
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-[9px] font-bold uppercase tracking-wider text-amber-300 leading-tight">SET UP</span>
+                                        <button onclick="simPressMenu()" class="w-full py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-white font-extrabold border border-slate-600 shadow">MENU</button>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-[9px] font-bold uppercase tracking-wider text-amber-300 leading-tight">QUIT</span>
+                                        <button onclick="simPressExit()" class="w-full py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-white font-extrabold border border-slate-600 shadow">EXIT</button>
+                                    </div>
+                                </div>
+
+                                <!-- Directional Navigation Pad (Left = List 1, Right = List 2, Up/Down = Rows) -->
+                                <div class="col-span-4 flex items-center justify-center">
+                                    <div class="w-20 h-20 rounded-full bg-slate-700 border-2 border-slate-500 p-1 grid grid-cols-3 grid-rows-3 gap-0.5 shadow-inner">
+                                        <div></div>
+                                        <button onclick="simMoveRow(-1)" title="Move up" class="rounded-t bg-slate-600 hover:bg-slate-500 text-[10px] font-bold flex items-center justify-center">&uarr;</button>
+                                        <div></div>
+                                        <button onclick="simMoveCol('left')" title="List 1" class="rounded-l bg-slate-600 hover:bg-slate-500 text-[10px] font-bold flex items-center justify-center">&larr;</button>
+                                        <div class="rounded-full bg-slate-800 border border-slate-600"></div>
+                                        <button onclick="simMoveCol('right')" title="List 2" class="rounded-r bg-slate-600 hover:bg-slate-500 text-[10px] font-bold flex items-center justify-center">&rarr;</button>
+                                        <div></div>
+                                        <button onclick="simMoveRow(1)" title="Move down" class="rounded-b bg-slate-600 hover:bg-slate-500 text-[10px] font-bold flex items-center justify-center">&darr;</button>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lower Casio Row: (-), 7, 8, 9, and Blue DEL key in bottom-right -->
+                            <div class="grid grid-cols-5 gap-1.5 text-xs mono-font items-end pt-0.5">
+                                <div class="flex flex-col items-center">
+                                    <span class="text-[9px] font-bold text-transparent leading-tight select-none">.</span>
+                                    <button onclick="simAppendChar('-')" class="w-full py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-white font-bold border border-slate-600 shadow">(&minus;)</button>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <span class="text-[9px] font-bold text-amber-300 leading-tight">M</span>
+                                    <button onclick="simAppendChar('7')" class="w-full py-1.5 rounded-lg bg-slate-100 hover:bg-white text-slate-950 font-extrabold border border-slate-300 shadow">7</button>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <span class="text-[9px] font-bold text-amber-300 leading-tight">N</span>
+                                    <button onclick="simAppendChar('8')" class="w-full py-1.5 rounded-lg bg-slate-100 hover:bg-white text-slate-950 font-extrabold border border-slate-300 shadow">8</button>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <span class="text-[9px] font-bold text-amber-300 leading-tight">O</span>
+                                    <button onclick="simAppendChar('9')" class="w-full py-1.5 rounded-lg bg-slate-100 hover:bg-white text-slate-950 font-extrabold border border-slate-300 shadow">9</button>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <span class="text-[9px] font-bold uppercase text-amber-300 leading-tight">INS</span>
+                                    <button onclick="simBackspace()" class="w-full py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-extrabold border border-blue-400 shadow">DEL</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================================================================== -->
+            <!-- SLIDE 8: GUIDED TRANSITION - FROM TABLE TO FORMULA (QUICK CHECK)      -->
+            <!-- ===================================================================== -->
+            <section class="slide flex-1 flex-col p-6 sm:p-10 slide-scroll overflow-y-auto" data-slide="7">
+                <div class="border-b border-slate-200 pb-3 mb-6 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-[#007791]">Guided Transition</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">From Difference Table to Formula: Quick Check</h2>
+                    </div>
+                    <span class="text-sm font-semibold text-slate-400">Slide 8 of 9</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+                    <!-- Check A: Linear -->
+                    <div class="bg-[#EEF4FA] border border-slate-200 rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-3 py-1 rounded-full bg-blue-100 text-[#1B365D] text-xs font-bold uppercase mb-3">
+                                Check A • Classify &amp; Solve
+                            </span>
+                            <p class="text-lg text-slate-800 font-medium mb-3">
+                                Consider the sequence: <span class="mono-font font-bold text-xl text-[#1B365D]">10, 7, 4, 1, &minus;2, &hellip;</span>
+                            </p>
+                            <ul class="space-y-2 text-slate-700 text-base">
+                                <li>1. Find the first differences (<span class="font-bold text-[#D92B2B]">&Delta;<sub>1</sub></span>).</li>
+                                <li>2. Is this sequence <strong>Linear</strong> or <strong>Quadratic</strong>?</li>
+                                <li>3. Find the general formula <span class="math-font font-bold"><i>u</i><sub><i>n</i></sub></span>.</li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-4">
+                            <button onclick="toggleReveal('diag-1', this)"
+                                class="w-full py-2.5 rounded-xl bg-[#1B365D] hover:bg-blue-900 text-white font-bold text-sm shadow transition">
+                                Reveal Answer (Check A)
+                            </button>
+                            <div id="diag-1" class="collapsible-content">
+                                <div class="collapsible-inner">
+                                    <div class="p-4 rounded-xl bg-white border border-blue-200 text-slate-800 text-sm sm:text-base space-y-1.5">
+                                        <div>• <span class="text-[#D92B2B] font-bold">&Delta;<sub>1</sub>:</span> &minus;3, &minus;3, &minus;3, &minus;3 (Constant!) &rArr; <strong>Linear</strong></div>
+                                        <div>• Using <span class="math-font"><i>u</i><sub><i>n</i></sub> = <i>u</i><sub>1</sub> + (<i>n</i> &minus; 1)<i>d</i> = 10 + (<i>n</i> &minus; 1)(&minus;3)</span>:</div>
+                                        <div class="font-bold text-[#0F766E] text-lg math-font"><i>u</i><sub><i>n</i></sub> = &minus;3<i>n</i> + 13</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Check B: Quadratic -->
+                    <div class="bg-[#EEF4FA] border border-slate-200 rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase mb-3">
+                                Check B • Classify &amp; Solve with GDC
+                            </span>
+                            <p class="text-lg text-slate-800 font-medium mb-3">
+                                Consider the sequence: <span class="mono-font font-bold text-xl text-[#1B365D]">3, 8, 15, 24, 35, &hellip;</span>
+                            </p>
+                            <ul class="space-y-2 text-slate-700 text-base">
+                                <li>1. Find <span class="font-bold text-[#D92B2B]">&Delta;<sub>1</sub></span> and <span class="font-bold text-[#0F766E]">&Delta;<sub>2</sub></span>.</li>
+                                <li>2. Which GDC regression option should you select?</li>
+                                <li>3. Find the general formula <span class="math-font font-bold"><i>u</i><sub><i>n</i></sub></span>.</li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-4">
+                            <button onclick="toggleReveal('diag-2', this)"
+                                class="w-full py-2.5 rounded-xl bg-[#007791] hover:bg-teal-700 text-white font-bold text-sm shadow transition">
+                                Reveal Answer (Check B)
+                            </button>
+                            <div id="diag-2" class="collapsible-content">
+                                <div class="collapsible-inner">
+                                    <div class="p-4 rounded-xl bg-white border border-teal-200 text-slate-800 text-sm sm:text-base space-y-1.5">
+                                        <div>• <span class="text-[#D92B2B] font-bold">&Delta;<sub>1</sub>:</span> 5, 7, 9, 11 &nbsp;|&nbsp; <span class="text-[#0F766E] font-bold">&Delta;<sub>2</sub>:</span> 2, 2, 2 (Constant!) &rArr; <strong>Quadratic</strong></div>
+                                        <div>• Press <span class="mono-font font-bold">[F2] X<sup>2</sup></span> on CASIO fx-CG50 (<span class="mono-font">a = 1, b = 2, c = 0, R<sup>2</sup> = 1</span>):</div>
+                                        <div class="font-bold text-[#0F766E] text-lg math-font"><i>u</i><sub><i>n</i></sub> = <i>n</i><sup>2</sup> + 2<i>n</i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================================================================== -->
+            <!-- SLIDE 9: CLASS PRACTICE LAUNCH                                        -->
+            <!-- ===================================================================== -->
+            <section class="slide flex-1 flex-col justify-between p-6 sm:p-10 slide-scroll overflow-y-auto" data-slide="8">
+                <div>
+                    <div class="border-b border-slate-200 pb-3 mb-6 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Independent Practice</span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Your Turn: 8-Question Practice Handout</h2>
+                        </div>
+                        <span class="text-sm font-semibold text-slate-400">Slide 9 of 9</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+                            <h3 class="text-xl font-bold text-slate-900 mb-4">For Each of the 8 Sequences:</h3>
+                            <ol class="space-y-3 text-base sm:text-lg text-slate-700 list-decimal list-inside">
+                                <li>Complete the <strong>Difference Table</strong> (<span class="text-red-700 font-bold">&Delta;<sub>1</sub></span> and <span class="text-emerald-700 font-bold">&Delta;<sub>2</sub></span>).</li>
+                                <li>Tick whether the sequence is <strong>Linear</strong> or <strong>Quadratic</strong>.</li>
+                                <li>Find the general formula <span class="math-font font-bold">u<sub>n</sub></span>:
+                                    <div class="pl-6 mt-1 text-sm sm:text-base text-slate-600">
+                                        • <strong>Linear:</strong> use <span class="math-font">u<sub>n</sub> = u<sub>1</sub> + (n &minus; 1)d</span><br>
+                                        • <strong>Quadratic:</strong> use your <strong>CASIO fx-CG50</strong> (<span class="mono-font">[F2] X<sup>2</sup></span>)
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-amber-950 mb-3 flex items-center gap-2">
+                                    <span>&#9888;&#65039;</span> Two Golden Checks Before Moving On
+                                </h3>
+                                <div class="space-y-4 text-slate-800 text-base">
+                                    <div class="bg-white p-4 rounded-xl border border-amber-200">
+                                        <div class="font-bold text-amber-900">1. GDC Sanity Check: <span class="mono-font">R<sup>2</sup> = 1</span></div>
+                                        <p class="text-sm text-slate-600 mt-1">
+                                            Because these are exact mathematical sequences, your calculator must display <strong>R<sup>2</sup> = 1</strong>. If not, re-check your List 1 &amp; List 2 entries!
+                                        </p>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-xl border border-amber-200">
+                                        <div class="font-bold text-amber-900">2. Substitute <span class="math-font">n = 5</span></div>
+                                        <p class="text-sm text-slate-600 mt-1">
+                                            Plug <span class="math-font">n = 5</span> into your final formula to verify it produces the 5th term in the table.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-slate-200 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3 text-sm">
+                    <span><strong>Need help with calculator buttons?</strong> Check your <em>CASIO fx-CG50 Reference Guide</em> handout or jump back to the GDC guide.</span>
+                    <button onclick="goToSlide(5)" class="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-semibold transition">
+                        View GDC Guide (Slide 6)
+                    </button>
+                </div>
+            </section>
+
+            <!-- Bottom Corner Slide Navigation Bar -->
+            <div class="bg-slate-50 border-t border-slate-200 px-4 sm:px-8 py-3 flex items-center justify-between gap-4">
+                <button id="cornerPrevBtn" onclick="changeSlide(-1)"
+                    class="px-4 py-2 rounded-xl bg-white hover:bg-slate-100 disabled:opacity-40 disabled:pointer-events-none text-slate-800 font-bold text-sm border border-slate-300 shadow-sm transition flex items-center gap-2">
+                    <span>&larr;</span>
+                    <span>Previous slide</span>
+                </button>
+
+                <span id="cornerSlideLabel" class="text-xs sm:text-sm font-semibold text-slate-500">
+                    Slide 1 of 9
+                </span>
+
+                <button id="cornerNextBtn" onclick="changeSlide(1)"
+                    class="px-4 py-2 rounded-xl bg-[#1B365D] hover:bg-blue-900 disabled:opacity-40 disabled:pointer-events-none text-white font-bold text-sm shadow-sm transition flex items-center gap-2">
+                    <span>Next slide</span>
+                    <span>&rarr;</span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Keyboard Hint Bar -->
+    <footer class="text-center text-slate-400 text-xs py-2 px-4">
+        Use <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">&larr;</kbd> and <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">&rarr;</kbd> arrow keys to navigate slides • Click any colored button to reveal step-by-step working
+    </footer>
+
+    <script>
+        // =========================================================================
+        // SVG DIFFERENCE TABLE GENERATOR (WITH RED V-SHAPED CONNECTING LINES)
+        // =========================================================================
+        function buildDifferenceTableSVG(config) {
+            const {
+                nVals,
+                uVals,
+                d1Vals = [],
+                d2Vals = [],
+                showD2 = false,
+                hideU = false,
+                hideD1 = false,
+                hideD2 = false
+            } = config;
+
+            const cols = nVals.length;
+            const labelW = 84;
+            const colW = 104;
+            const totalW = labelW + cols * colW;
+            const rowH = 54;
+            const numRows = showD2 ? 4 : 3;
+            const totalH = numRows * rowH;
+
+            let svg = `<svg viewBox="0 0 ${totalW} ${totalH}" class="w-full h-auto rounded-lg border-2 border-slate-800 bg-white shadow-sm" xmlns="http://www.w3.org/2000/svg">`;
+
+            // Header row background (n)
+            svg += `<rect x="0" y="0" width="${totalW}" height="${rowH}" fill="#dbeafe" />`;
+            // Left label column background
+            svg += `<rect x="0" y="0" width="${labelW}" height="${totalH}" fill="#e2e8f0" />`;
+
+            // Vertical divider lines (only in n and u_n rows, matching Bavarian International School style)
+            svg += `<line x1="${labelW}" y1="0" x2="${labelW}" y2="${totalH}" stroke="#1e293b" stroke-width="2.5" />`;
+            for (let i = 1; i < cols; i++) {
+                const x = labelW + i * colW;
+                svg += `<line x1="${x}" y1="0" x2="${x}" y2="${rowH * 2}" stroke="#93c5fd" stroke-width="1.5" />`;
+            }
+
+            // Horizontal row divider lines
+            for (let r = 1; r < numRows; r++) {
+                const y = r * rowH;
+                svg += `<line x1="0" y1="${y}" x2="${totalW}" y2="${y}" stroke="#1e293b" stroke-width="2" />`;
+            }
+
+            // Row Labels
+            const labelX = labelW / 2;
+            svg += `<text x="${labelX}" y="${rowH * 0.62}" text-anchor="middle" font-family="Times New Roman, serif" font-style="italic" font-weight="bold" font-size="22" fill="#1e3a8a">n</text>`;
+            svg += `<text x="${labelX}" y="${rowH * 1.62}" text-anchor="middle" font-family="Times New Roman, serif" font-style="italic" font-weight="bold" font-size="22" fill="#1e3a8a">u<tspan dy="4" font-size="15">n</tspan></text>`;
+            svg += `<text x="${labelX}" y="${rowH * 2.62}" text-anchor="middle" font-family="Inter, sans-serif" font-weight="bold" font-size="20" fill="#1e3a8a">&Delta;<tspan dy="4" font-size="14">1</tspan></text>`;
+            if (showD2) {
+                svg += `<text x="${labelX}" y="${rowH * 3.62}" text-anchor="middle" font-family="Inter, sans-serif" font-weight="bold" font-size="20" fill="#1e3a8a">&Delta;<tspan dy="4" font-size="14">2</tspan></text>`;
+            }
+
+            // Row 1 (n) & Row 2 (u_n) values
+            for (let i = 0; i < cols; i++) {
+                const cx = labelW + (i + 0.5) * colW;
+                svg += `<text x="${cx}" y="${rowH * 0.62}" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="20" fill="#1e3a8a">${nVals[i]}</text>`;
+                if (!hideU && uVals[i] !== undefined && uVals[i] !== '') {
+                    svg += `<text x="${cx}" y="${rowH * 1.56}" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="21" fill="#0f172a">${uVals[i]}</text>`;
+                }
+            }
+
+            // Red V-lines connecting u_n -> Delta_1, plus Delta_1 values
+            for (let i = 0; i < cols - 1; i++) {
+                const xLeft = labelW + (i + 0.5) * colW;
+                const xRight = labelW + (i + 1.5) * colW;
+                const xMid = (xLeft + xRight) / 2;
+
+                // V-lines from bottom of u_n cells to top of Delta_1 value
+                svg += `<line x1="${xLeft + 10}" y1="${rowH * 1.72}" x2="${xMid - 8}" y2="${rowH * 2.26}" stroke="#dc2626" stroke-width="2.4" stroke-linecap="round" />`;
+                svg += `<line x1="${xRight - 10}" y1="${rowH * 1.72}" x2="${xMid + 8}" y2="${rowH * 2.26}" stroke="#dc2626" stroke-width="2.4" stroke-linecap="round" />`;
+
+                if (!hideD1 && d1Vals[i] !== undefined && d1Vals[i] !== '') {
+                    svg += `<text x="${xMid}" y="${rowH * 2.66}" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="20" fill="#b91c1c">${d1Vals[i]}</text>`;
+                }
+            }
+
+            // Red V-lines connecting Delta_1 -> Delta_2, plus Delta_2 values
+            if (showD2) {
+                for (let i = 0; i < cols - 2; i++) {
+                    const xLeft = labelW + (i + 1) * colW;
+                    const xRight = labelW + (i + 2) * colW;
+                    const xMid = (xLeft + xRight) / 2;
+
+                    svg += `<line x1="${xLeft + 10}" y1="${rowH * 2.75}" x2="${xMid - 8}" y2="${rowH * 3.26}" stroke="#dc2626" stroke-width="2.4" stroke-linecap="round" />`;
+                    svg += `<line x1="${xRight - 10}" y1="${rowH * 2.75}" x2="${xMid + 8}" y2="${rowH * 3.26}" stroke="#dc2626" stroke-width="2.4" stroke-linecap="round" />`;
+
+                    if (!hideD2 && d2Vals[i] !== undefined && d2Vals[i] !== '') {
+                        svg += `<text x="${xMid}" y="${rowH * 3.66}" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="20" fill="#047857">${d2Vals[i]}</text>`;
+                    }
+                }
+            }
+
+            svg += `</svg>`;
+            return svg;
+        }
+
+        // =========================================================================
+        // STATE & RENDERING FOR INTERACTIVE TABLES
+        // =========================================================================
+        let inv1aRevealed = false;
+        let inv1bRevealed = false;
+        let we1D1Revealed = false;
+        let we1D2Revealed = false;
+        let we2D1Revealed = false;
+        let we2D2Revealed = false;
+        let we3Revealed = false;
+
+        function renderAllTables() {
+            // Slide 3: Investigation Model Example (u_n = 3n + 2)
+            document.getElementById('svg-inv-example').innerHTML = buildDifferenceTableSVG({
+                nVals: [1, 2, 3, 4, 5],
+                uVals: [5, 8, 11, 14, 17],
+                d1Vals: [3, 3, 3, 3],
+                showD2: false
+            });
+
+            // Slide 3: Investigation 1(a) u_n = 4n + 3
+            document.getElementById('svg-inv-1a').innerHTML = buildDifferenceTableSVG({
+                nVals: [1, 2, 3, 4, 5],
+                uVals: [7, 11, 15, 19, 23],
+                d1Vals: [4, 4, 4, 4],
+                showD2: false,
+                hideU: !inv1aRevealed,
+                hideD1: !inv1aRevealed
+            });
+
+            // Slide 3: Investigation 1(b) u_n = -3n + 7
+            document.getElementById('svg-inv-1b').innerHTML = buildDifferenceTableSVG({
+                nVals: [1, 2, 3, 4, 5],
+                uVals: [4, 1, -2, -5, -8],
+                d1Vals: [-3, -3, -3, -3],
+                showD2: false,
+                hideU: !inv1bRevealed,
+                hideD1: !inv1bRevealed
+            });
+
+            // Slide 4: Worked Example 1 (5, 9, 13, 17, 21)
+            document.getElementById('svg-we1').innerHTML = buildDifferenceTableSVG({
+                nVals: [1, 2, 3, 4, 5],
+                uVals: [5, 9, 13, 17, 21],
+                d1Vals: [4, 4, 4, 4],
+                d2Vals: [0, 0, 0],
+                showD2: true,
+                hideD1: !we1D1Revealed,
+                hideD2: !we1D2Revealed
+            });
+
+            // Slide 5: Worked Example 2 (4, 9, 18, 31, 48, 69)
+            document.getElementById('svg-we2').innerHTML = buildDifferenceTableSVG({
+                nVals: [1, 2, 3, 4, 5, 6],
+                uVals: [4, 9, 18, 31, 48, 69],
+                d1Vals: [5, 9, 13, 17, 21],
+                d2Vals: [4, 4, 4, 4],
+                showD2: true,
+                hideD1: !we2D1Revealed,
+                hideD2: !we2D2Revealed
+            });
+
+            // Slide 6: Worked Example 3 (2, 5, 12, 23, 38, 57)
+            const we3El = document.getElementById('svg-we3');
+            if (we3El) {
+                we3El.innerHTML = buildDifferenceTableSVG({
+                    nVals: [1, 2, 3, 4, 5, 6],
+                    uVals: [2, 5, 12, 23, 38, 57],
+                    d1Vals: [3, 7, 11, 15, 19],
+                    d2Vals: [4, 4, 4, 4],
+                    showD2: true,
+                    hideD1: !we3Revealed,
+                    hideD2: !we3Revealed
+                });
+            }
+        }
+
+        function setPadEraser(btn) {
+            we1PadErasing = true;
+            document.querySelectorAll('.pad-color-btn').forEach(b => {
+                b.classList.remove('ring-2', 'ring-offset-1', 'ring-indigo-600', 'scale-110');
+            });
+            if (btn) {
+                btn.classList.remove('bg-rose-50', 'text-rose-700');
+                btn.classList.add('ring-2', 'ring-offset-1', 'ring-rose-600', 'bg-rose-600', 'text-white');
+            }
+        }
+
+        function clearWe1Pad() {
+            const canvas = document.getElementById('we1-canvas');
+            if (!canvas) return;
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function hideWe1Pad() {
+            const padBox = document.getElementById('we1-pad-box');
+            const padBtn = document.getElementById('we1-pad-btn');
+            if (padBox) padBox.classList.remove('open');
+            if (padBtn) padBtn.innerHTML = 'Working Pad';
+        }
+
+        function toggleWe1Pad(btn) {
+            const padBox = document.getElementById('we1-pad-box');
+            const isOpen = padBox.classList.toggle('open');
+            btn.innerHTML = isOpen ? 'Hide Working Pad' : 'Working Pad';
+            if (isOpen) {
+                setTimeout(initWe1Canvas, 50);
+            }
+        }
+
+        function toggleWe1Algebra(btn) {
+            const algBox = document.getElementById('we1-step2-box');
+            const isOpen = algBox.classList.toggle('open');
+            if (isOpen) {
+                // Hide working pad when showing algebraic solution
+                hideWe1Pad();
+                btn.innerHTML = 'Hide Algebraic Solution';
+            } else {
+                btn.innerHTML = 'Show Algebraic Solution';
+            }
+        }
+
+        function toggleInvTable(which, btn) {
+            if (which === '1a') {
+                inv1aRevealed = !inv1aRevealed;
+                btn.innerHTML = inv1aRevealed ? 'Hide 1(a) Table' : 'Reveal 1(a) Table';
+            } else {
+                inv1bRevealed = !inv1bRevealed;
+                btn.innerHTML = inv1bRevealed ? 'Hide 1(b) Table' : 'Reveal 1(b) Table';
+            }
+            renderAllTables();
+        }
+
+        function onRevealInvestigation(isOpen) {
+            if (isOpen) {
+                inv1aRevealed = true;
+                inv1bRevealed = true;
+                document.getElementById('btn-inv-1a').innerHTML = 'Hide 1(a) Table';
+                document.getElementById('btn-inv-1b').innerHTML = 'Hide 1(b) Table';
+                renderAllTables();
+            }
+        }
+
+        function toggleWe1Step(step, btn) {
+            if (step === 1) {
+                we1D1Revealed = !we1D1Revealed;
+                if (!we1D1Revealed) {
+                    we1D2Revealed = false;
+                    document.getElementById('we1-btn2').innerHTML = 'Reveal &Delta;<sub>2</sub>';
+                }
+                btn.innerHTML = we1D1Revealed ? 'Hide &Delta;<sub>1</sub>' : 'Reveal &Delta;<sub>1</sub>';
+            } else {
+                we1D2Revealed = !we1D2Revealed;
+                if (we1D2Revealed && !we1D1Revealed) {
+                    we1D1Revealed = true;
+                    document.getElementById('we1-btn1').innerHTML = 'Hide &Delta;<sub>1</sub>';
+                }
+                btn.innerHTML = we1D2Revealed ? 'Hide &Delta;<sub>2</sub>' : 'Reveal &Delta;<sub>2</sub>';
+            }
+            const note = document.getElementById('we1-step1-note');
+            if (we1D1Revealed) {
+                note.classList.add('open');
+            } else {
+                note.classList.remove('open');
+            }
+            renderAllTables();
+        }
+
+        function toggleWe2Step(step, btn) {
+            if (step === 1) {
+                we2D1Revealed = !we2D1Revealed;
+                if (!we2D1Revealed) {
+                    we2D2Revealed = false;
+                    document.getElementById('we2-btn2').innerHTML = '2. Reveal &Delta;<sub>2</sub> Row';
+                }
+                btn.innerHTML = we2D1Revealed ? '1. Hide &Delta;<sub>1</sub> Row' : '1. Reveal &Delta;<sub>1</sub> Row';
+            } else if (step === 2) {
+                we2D2Revealed = !we2D2Revealed;
+                if (we2D2Revealed && !we2D1Revealed) {
+                    we2D1Revealed = true;
+                    document.getElementById('we2-btn1').innerHTML = '1. Hide &Delta;<sub>1</sub> Row';
+                }
+                btn.innerHTML = we2D2Revealed ? '2. Hide &Delta;<sub>2</sub> Row' : '2. Reveal &Delta;<sub>2</sub> Row';
+            }
+            renderAllTables();
+        }
+
+        function toggleWe3Table(btn) {
+            we3Revealed = !we3Revealed;
+            if (btn) {
+                btn.innerHTML = we3Revealed ? '1. Hide Difference Table' : '1. Go Through Difference Table on Screen';
+            }
+            renderAllTables();
+        }
+
+        // =========================================================================
+        // WORKING CASIO FX-CG50 SIMULATOR (STAT -> LIST1/LIST2 -> CALC -> SET/REG)
+        // =========================================================================
+        const gdcState = {
+            mode: 'STAT_LISTS', // 'MENU', 'STAT_LISTS', 'CALC_BAR_LISTS', 'CALC_MENU', 'SET_MENU', 'REG_MENU', 'REG_RESULT'
+            list1: [1, 2, 3, 4, 5, 6],
+            list2: [4, 9, 18, 31, 48, 69],
+            activeCol: 1, // 1 = List1, 2 = List2
+            activeRow: 0,
+            xList: 'List1',
+            yList: 'List2',
+            regType: 'QUAD' // 'LIN' or 'QUAD'
+        };
+
+        function solveLinearRegression(xs, ys) {
+            const n = xs.length;
+            if (n < 2) return null;
+            const meanX = xs.reduce((s, v) => s + v, 0) / n;
+            const meanY = ys.reduce((s, v) => s + v, 0) / n;
+            let num = 0, denX = 0, denY = 0;
+            for (let i = 0; i < n; i++) {
+                const dx = xs[i] - meanX;
+                const dy = ys[i] - meanY;
+                num += dx * dy;
+                denX += dx * dx;
+                denY += dy * dy;
+            }
+            if (denX === 0) return null;
+            const a = num / denX;
+            const b = meanY - a * meanX;
+            const r = (denX * denY > 0) ? (num / Math.sqrt(denX * denY)) : 1;
+            return { a, b, r2: r * r };
+        }
+
+        function solveQuadraticRegression(xs, ys) {
+            const len = Math.min(xs.length, ys.length);
+            if (len < 3) return null;
+            // Fit y = ax^2 + bx + c via normal equations / Gaussian elimination on 3x3 system
+            let s0 = len, s1 = 0, s2 = 0, s3 = 0, s4 = 0;
+            let t0 = 0, t1 = 0, t2 = 0;
+            for (let i = 0; i < len; i++) {
+                const x = xs[i], y = ys[i];
+                const x2 = x * x;
+                s1 += x; s2 += x2; s3 += x2 * x; s4 += x2 * x2;
+                t0 += y; t1 += x * y; t2 += x2 * y;
+            }
+            // System:
+            // s4*a + s3*b + s2*c = t2
+            // s3*a + s2*b + s1*c = t1
+            // s2*a + s1*b + s0*c = t0
+            const M = [
+                [s4, s3, s2, t2],
+                [s3, s2, s1, t1],
+                [s2, s1, s0, t0]
+            ];
+            for (let col = 0; col < 3; col++) {
+                let pivot = col;
+                for (let r = col + 1; r < 3; r++) {
+                    if (Math.abs(M[r][col]) > Math.abs(M[pivot][col])) pivot = r;
+                }
+                [M[col], M[pivot]] = [M[pivot], M[col]];
+                if (Math.abs(M[col][col]) < 1e-12) return null;
+                for (let r = col + 1; r < 3; r++) {
+                    const factor = M[r][col] / M[col][col];
+                    for (let c = col; c < 4; c++) M[r][c] -= factor * M[col][c];
+                }
+            }
+            const c = M[2][3] / M[2][2];
+            const b = (M[1][3] - M[1][2] * c) / M[1][1];
+            const a = (M[0][3] - M[0][2] * c - M[0][1] * b) / M[0][0];
+
+            const meanY = t0 / len;
+            let ssRes = 0, ssTot = 0;
+            for (let i = 0; i < len; i++) {
+                const yPred = a * xs[i] * xs[i] + b * xs[i] + c;
+                ssRes += (ys[i] - yPred) ** 2;
+                ssTot += (ys[i] - meanY) ** 2;
+            }
+            const r2 = ssTot === 0 ? 1 : Math.max(0, 1 - ssRes / ssTot);
+            return { a, b, c, r2 };
+        }
+
+        function fmtNum(v) {
+            const rounded = Math.round(v * 1000000) / 1000000;
+            return Number.isInteger(rounded) ? rounded.toString() : rounded.toFixed(4).replace(/\.?0+$/, '');
+        }
+
+        function syncFnKeyLabels(labels, highlightIndices = []) {
+            for (let i = 0; i < 6; i++) {
+                const el = document.getElementById(`fn-label-${i + 1}`);
+                if (!el) continue;
+                const txt = labels[i] || '—';
+                el.textContent = txt;
+                if (highlightIndices.includes(i)) {
+                    el.className = 'w-full text-center text-[10px] font-bold px-1 py-0.5 rounded bg-amber-500/25 text-amber-300 border border-amber-400/60 truncate';
+                } else {
+                    el.className = 'w-full text-center text-[10px] font-bold px-1 py-0.5 rounded bg-slate-950 text-amber-300 border border-slate-600 truncate';
+                }
+            }
+        }
+
+        function renderCasioSim() {
+            const body = document.getElementById('gdc-screen-body');
+            const soft = document.getElementById('gdc-softkeys');
+            const cap = document.getElementById('gdc-caption');
+            const badge = document.getElementById('gdc-status-badge');
+            const colEl = document.getElementById('gdc-target-col');
+            const rowEl = document.getElementById('gdc-target-row');
+
+            if (!body || !soft) return;
+
+            const setCaption = (html) => {
+                if (cap) cap.innerHTML = html;
+            };
+
+            colEl.textContent = gdcState.activeCol === 1 ? 'List 1 (n)' : 'List 2 (uₙ)';
+            rowEl.textContent = `#${gdcState.activeRow + 1}`;
+
+            const maxRows = Math.max(gdcState.list1.length, gdcState.list2.length, 6);
+
+            if (gdcState.mode === 'MENU') {
+                badge.textContent = 'Main Menu';
+                syncFnKeyLabels(['STAT', '—', '—', '—', '—', '—'], [0]);
+                body.innerHTML = `
+                    <div class="bg-blue-900 text-white text-xs px-2 py-1 rounded font-bold mb-2">MAIN MENU</div>
+                    <div class="grid grid-cols-3 gap-2 text-xs font-bold my-auto">
+                        <div class="p-2 rounded bg-white/80 border border-slate-400">1: Run-Mat</div>
+                        <div class="p-2 rounded bg-amber-200 border-2 border-amber-600 text-slate-950">2: STAT</div>
+                        <div class="p-2 rounded bg-white/80 border border-slate-400">3: Graph</div>
+                        <div class="p-2 rounded bg-white/80 border border-slate-400">4: Dyne</div>
+                        <div class="p-2 rounded bg-white/80 border border-slate-400">5: Table</div>
+                        <div class="p-2 rounded bg-white/80 border border-slate-400">6: Equa</div>
+                    </div>`;
+                soft.innerHTML = ['<span></span>','<span></span>','<span></span>','<span></span>','<span></span>','<span></span>'];
+                setCaption('Press <strong>2:STAT</strong> or <strong>F1 (STAT)</strong> to open the Statistics list editor.');
+                return;
+            }
+
+            if (gdcState.mode === 'STAT_LISTS') {
+                badge.textContent = 'STAT Editor';
+                syncFnKeyLabels(['GRPH', 'CALC', 'TEST', 'INTR', 'LIST', '▷'], [1, 5]);
+                let rowsHtml = '';
+                for (let r = 0; r < maxRows; r++) {
+                    const v1 = gdcState.list1[r] !== undefined ? gdcState.list1[r] : '';
+                    const v2 = gdcState.list2[r] !== undefined ? gdcState.list2[r] : '';
+                    const sel1 = gdcState.activeCol === 1 && gdcState.activeRow === r ? 'bg-amber-300 ring-2 ring-amber-600' : 'bg-white/75';
+                    const sel2 = gdcState.activeCol === 2 && gdcState.activeRow === r ? 'bg-amber-300 ring-2 ring-amber-600' : 'bg-white/75';
+                    rowsHtml += `
+                        <div class="grid grid-cols-3 gap-1 text-xs items-center">
+                            <span class="text-slate-500 font-bold pl-1">${r + 1}</span>
+                            <button onclick="selectSimCell(1, ${r})" class="px-1.5 py-0.5 rounded border border-slate-400 text-right font-bold ${sel1}">${v1}</button>
+                            <button onclick="selectSimCell(2, ${r})" class="px-1.5 py-0.5 rounded border border-slate-400 text-right font-bold ${sel2}">${v2}</button>
+                        </div>`;
+                }
+                body.innerHTML = `
+                    <div class="bg-blue-900 text-white text-xs px-2 py-1 rounded font-bold mb-1.5 flex justify-between">
+                        <span>STAT • LIST EDITOR</span>
+                        <span>n=${Math.min(gdcState.list1.length, gdcState.list2.length)}</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1 text-xs font-bold text-blue-950 border-b border-slate-400 pb-0.5 mb-1">
+                        <span>Row</span>
+                        <span class="text-right">List 1</span>
+                        <span class="text-right">List 2</span>
+                    </div>
+                    <div class="space-y-1 max-h-[145px] overflow-y-auto pr-0.5">${rowsHtml}</div>`;
+                soft.innerHTML = [
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">GRPH</span>',
+                    '<span class="bg-amber-600 text-white py-0.5 rounded">CALC</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">TEST</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">INTR</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">LIST</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">▷</span>'
+                ];
+                setCaption('Enter values with <strong>EXE</strong>, then press <strong>F2 (CALC)</strong>.');
+                return;
+            }
+
+            if (gdcState.mode === 'CALC_BAR_LISTS') {
+                badge.textContent = 'CALC Bar (Lists)';
+                syncFnKeyLabels(['1VAR', '2VAR', 'REG', '—', '—', 'SET'], [2, 5]);
+                let rowsHtml = '';
+                for (let r = 0; r < maxRows; r++) {
+                    const v1 = gdcState.list1[r] !== undefined ? gdcState.list1[r] : '';
+                    const v2 = gdcState.list2[r] !== undefined ? gdcState.list2[r] : '';
+                    const sel1 = gdcState.activeCol === 1 && gdcState.activeRow === r ? 'bg-slate-900 text-white font-bold' : 'bg-white/75';
+                    const sel2 = gdcState.activeCol === 2 && gdcState.activeRow === r ? 'bg-slate-900 text-white font-bold' : 'bg-white/75';
+                    rowsHtml += `
+                        <div class="grid grid-cols-3 gap-1 text-xs items-center">
+                            <span class="text-slate-500 font-bold pl-1">${r + 1}</span>
+                            <button onclick="selectSimCell(1, ${r})" class="px-1.5 py-0.5 rounded border border-slate-400 text-right ${sel1}">${v1}</button>
+                            <button onclick="selectSimCell(2, ${r})" class="px-1.5 py-0.5 rounded border border-slate-400 text-right ${sel2}">${v2}</button>
+                        </div>`;
+                }
+                body.innerHTML = `
+                    <div class="grid grid-cols-3 gap-1 text-xs font-bold text-blue-950 border-b border-slate-400 pb-0.5 mb-1">
+                        <span>Row</span>
+                        <span class="text-right">List 1</span>
+                        <span class="text-right">List 2</span>
+                    </div>
+                    <div class="space-y-1 max-h-[145px] overflow-y-auto pr-0.5">${rowsHtml}</div>`;
+                soft.innerHTML = [
+                    '<span class="bg-white text-slate-950 border border-slate-900 py-0.5 rounded">1-VAR</span>',
+                    '<span class="bg-white text-slate-950 border border-slate-900 py-0.5 rounded">2-VAR</span>',
+                    '<span class="bg-slate-950 text-white py-0.5 rounded">REG</span>',
+                    '<span class="text-slate-400 py-0.5">|</span>',
+                    '<span class="text-slate-400 py-0.5">|</span>',
+                    '<span class="bg-slate-950 text-white py-0.5 rounded">SET</span>'
+                ];
+                setCaption('Press <strong>F3 (REG)</strong> to choose Linear (<strong>X</strong>) or Quadratic (<strong>X²</strong>) regression.');
+                return;
+            }
+
+            if (gdcState.mode === 'SET_MENU') {
+                badge.textContent = 'SET 2Var Lists';
+                syncFnKeyLabels(['X:L1', 'X:L2', 'Y:L1', 'Y:L2', '—', 'OK'], [0, 1, 2, 3, 5]);
+                body.innerHTML = `
+                    <div class="bg-blue-900 text-white text-xs px-2 py-1 rounded font-bold mb-2">2VAR REGRESSION SETUP</div>
+                    <div class="space-y-2 text-xs font-bold my-auto">
+                        <div class="p-2 rounded bg-white/85 border border-slate-400 flex justify-between items-center">
+                            <span>2Var XList :</span>
+                            <span class="px-2 py-0.5 rounded bg-amber-200 text-slate-950 border border-amber-600">${gdcState.xList}</span>
+                        </div>
+                        <div class="p-2 rounded bg-white/85 border border-slate-400 flex justify-between items-center">
+                            <span>2Var YList :</span>
+                            <span class="px-2 py-0.5 rounded bg-emerald-200 text-slate-950 border border-emerald-600">${gdcState.yList}</span>
+                        </div>
+                        <div class="text-[11px] text-slate-700">
+                            Press <strong>F1/F2</strong> for XList, <strong>F3/F4</strong> for YList, or <strong>F6 (OK)</strong> to return to CALC.
+                        </div>
+                    </div>`;
+                soft.innerHTML = [
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">X:L1</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">X:L2</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">Y:L1</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">Y:L2</span>',
+                    '<span class="text-slate-400 py-0.5">|</span>',
+                    '<span class="bg-emerald-700 text-white py-0.5 rounded">OK</span>'
+                ];
+                setCaption(`Confirmed: <strong>2Var XList = ${gdcState.xList}</strong> and <strong>YList = ${gdcState.yList}</strong>. Press <strong>F6 (OK)</strong>, then <strong>F3 (REG)</strong>.`);
+                return;
+            }
+
+            if (gdcState.mode === 'REG_MENU') {
+                badge.textContent = 'Select Regression';
+                syncFnKeyLabels(['X', 'Med', 'X²', 'X³', 'X⁴', '▷'], [0, 2]);
+                body.innerHTML = `
+                    <div class="bg-blue-900 text-white text-xs px-2 py-1 rounded font-bold mb-2">SELECT REGRESSION MODEL</div>
+                    <div class="space-y-1.5 text-xs font-bold">
+                        <div class="p-1.5 rounded bg-white/85 border border-slate-400">[F1] X &nbsp;&rarr;&nbsp; y = ax + b (Linear)</div>
+                        <div class="p-1.5 rounded bg-emerald-200 border-2 border-emerald-700">[F3] X² &rarr;&nbsp; y = ax² + bx + c (Quadratic)</div>
+                        <div class="p-1.5 rounded bg-slate-200/80 border border-slate-400 text-slate-600">[F4] X³ &rarr;&nbsp; y = ax³ + bx² + cx + d (Cubic — Next Lesson)</div>
+                    </div>`;
+                soft.innerHTML = [
+                    '<span class="bg-teal-700 text-white py-0.5 rounded">X</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">Med</span>',
+                    '<span class="bg-emerald-700 text-white py-0.5 rounded">X²</span>',
+                    '<span class="bg-slate-500 text-white py-0.5 rounded">X³</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">X⁴</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">▷</span>'
+                ];
+                setCaption('Press <strong>F1 (X)</strong> for a linear sequence or <strong>F3 (X²)</strong> for a quadratic sequence!');
+                return;
+            }
+
+            if (gdcState.mode === 'REG_RESULT') {
+                syncFnKeyLabels(['COPY', 'DRAW', '—', '—', '—', 'LIST'], [5]);
+                const xSource = gdcState.xList === 'List1' ? gdcState.list1 : gdcState.list2;
+                const ySource = gdcState.yList === 'List2' ? gdcState.list2 : gdcState.list1;
+                const pairs = [];
+                const len = Math.min(xSource.length, ySource.length);
+                for (let i = 0; i < len; i++) {
+                    const x = parseFloat(xSource[i]);
+                    const y = parseFloat(ySource[i]);
+                    if (!Number.isNaN(x) && !Number.isNaN(y)) pairs.push([x, y]);
+                }
+                const xs = pairs.map(p => p[0]);
+                const ys = pairs.map(p => p[1]);
+
+                if (gdcState.regType === 'LIN') {
+                    badge.textContent = 'LinReg (ax + b)';
+                    const res = solveLinearRegression(xs, ys);
+                    if (!res) {
+                        body.innerHTML = `<div class="text-rose-700 font-bold text-xs my-auto">Need at least 2 valid (n, uₙ) pairs in ${gdcState.xList} &amp; ${gdcState.yList}.</div>`;
+                    } else {
+                        const aStr = fmtNum(res.a);
+                        const bVal = res.b;
+                        const bStr = fmtNum(Math.abs(bVal));
+                        const bSign = bVal >= 0 ? '+' : '−';
+                        body.innerHTML = `
+                            <div class="bg-blue-900 text-white text-xs px-2 py-1 rounded font-bold mb-1.5">LinearReg (a·x + b)</div>
+                            <div class="text-xs font-bold text-slate-700 border-b border-slate-400 pb-1 mb-1.5">y = ax + b</div>
+                            <div class="text-sm font-bold space-y-0.5">
+                                <div>a &nbsp;= ${aStr}</div>
+                                <div>b &nbsp;= ${fmtNum(bVal)}</div>
+                                <div class="text-emerald-800">r² = ${fmtNum(res.r2)}</div>
+                            </div>
+                            <div class="mt-2 bg-emerald-100 border border-emerald-500 rounded px-2 py-1 text-xs font-bold text-emerald-950">
+                                Formula: uₙ = ${aStr}n ${bSign} ${bStr}
+                            </div>`;
+                        setCaption(`Computed from ${gdcState.xList} &amp; ${gdcState.yList}: <strong>uₙ = ${aStr}n ${bSign} ${bStr}</strong> (r² = ${fmtNum(res.r2)}).`);
+                    }
+                } else {
+                    badge.textContent = 'QuadReg (ax² + bx + c)';
+                    const res = solveQuadraticRegression(xs, ys);
+                    if (!res) {
+                        body.innerHTML = `<div class="text-rose-700 font-bold text-xs my-auto">Need at least 3 valid (n, uₙ) pairs in ${gdcState.xList} &amp; ${gdcState.yList}.</div>`;
+                    } else {
+                        const aStr = fmtNum(res.a);
+                        const bStr = fmtNum(Math.abs(res.b));
+                        const bSign = res.b >= 0 ? '+' : '−';
+                        const cStr = fmtNum(Math.abs(res.c));
+                        const cSign = res.c >= 0 ? '+' : '−';
+                        const aTerm = res.a === 1 ? 'n²' : (res.a === -1 ? '−n²' : `${aStr}n²`);
+                        const bTerm = Math.abs(res.b) === 0 ? '' : ` ${bSign} ${Math.abs(res.b) === 1 ? '' : bStr}n`;
+                        const cTerm = Math.abs(res.c) === 0 ? '' : ` ${cSign} ${cStr}`;
+                        const formulaText = `uₙ = ${aTerm}${bTerm}${cTerm}`;
+                        body.innerHTML = `
+                            <div class="bg-blue-900 text-white text-xs px-2 py-1 rounded font-bold mb-1.5">QuadReg (a·x² + b·x + c)</div>
+                            <div class="text-xs font-bold text-slate-700 border-b border-slate-400 pb-1 mb-1.5">y = ax² + bx + c</div>
+                            <div class="text-sm font-bold space-y-0.5">
+                                <div>a &nbsp;= ${aStr}</div>
+                                <div>b &nbsp;= ${fmtNum(res.b)}</div>
+                                <div>c &nbsp;= ${fmtNum(res.c)}</div>
+                                <div class="text-emerald-800">R² = ${fmtNum(res.r2)}</div>
+                            </div>
+                            <div class="mt-2 bg-emerald-100 border border-emerald-500 rounded px-2 py-1 text-xs font-bold text-emerald-950">
+                                Formula: ${formulaText}
+                            </div>`;
+                        setCaption(`Computed from ${gdcState.xList} &amp; ${gdcState.yList}: <strong>${formulaText}</strong> (R² = ${fmtNum(res.r2)}).`);
+                    }
+                }
+
+                soft.innerHTML = [
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">COPY</span>',
+                    '<span class="bg-slate-800 text-white py-0.5 rounded">DRAW</span>',
+                    '<span class="text-slate-400 py-0.5">|</span>',
+                    '<span class="text-slate-400 py-0.5">|</span>',
+                    '<span class="text-slate-400 py-0.5">|</span>',
+                    '<span class="bg-amber-600 text-white py-0.5 rounded">LIST</span>'
+                ];
+            }
+        }
+
+        function loadPresetToSim(l1, l2, label) {
+            gdcState.list1 = [...l1];
+            gdcState.list2 = [...l2];
+            gdcState.xList = 'List1';
+            gdcState.yList = 'List2';
+            gdcState.mode = 'STAT_LISTS';
+            gdcState.activeCol = 2;
+            gdcState.activeRow = 0;
+            renderCasioSim();
+            const cap = document.getElementById('gdc-caption');
+            if (cap) {
+                cap.innerHTML = `Loaded <strong>${label}</strong> into List 1 &amp; List 2. Press <strong>F2 (CALC)</strong> &rarr; <strong>F3 (REG)</strong> &rarr; <strong>F2 (X²)</strong> (or <strong>F1 (X)</strong>).`;
+            }
+        }
+
+        function simClearAll() {
+            gdcState.list1 = [];
+            gdcState.list2 = [];
+            gdcState.xList = 'List1';
+            gdcState.yList = 'List2';
+            gdcState.activeCol = 1;
+            gdcState.activeRow = 0;
+            gdcState.mode = 'STAT_LISTS';
+            renderCasioSim();
+        }
+
+        function selectSimCell(col, row) {
+            gdcState.mode = 'STAT_LISTS';
+            gdcState.activeCol = col;
+            gdcState.activeRow = row;
+            renderCasioSim();
+            const inp = document.getElementById('gdc-num-input');
+            if (inp) inp.focus();
+        }
+
+        function simPressMenu() {
+            gdcState.mode = 'MENU';
+            renderCasioSim();
+        }
+
+        function simPressStat2() {
+            gdcState.mode = 'STAT_LISTS';
+            renderCasioSim();
+        }
+
+        function simMoveCol(dir) {
+            gdcState.mode = 'STAT_LISTS';
+            gdcState.activeCol = dir === 'left' ? 1 : 2;
+            renderCasioSim();
+        }
+
+        function simMoveRow(delta) {
+            gdcState.mode = 'STAT_LISTS';
+            const maxRows = Math.max(gdcState.list1.length, gdcState.list2.length, 6);
+            gdcState.activeRow = Math.max(0, Math.min(maxRows - 1, gdcState.activeRow + delta));
+            renderCasioSim();
+        }
+
+        function simPressExit() {
+            if (gdcState.mode === 'SET_MENU') {
+                gdcState.mode = 'CALC_BAR_LISTS';
+            } else if (gdcState.mode === 'REG_MENU' || gdcState.mode === 'CALC_MENU') {
+                gdcState.mode = 'CALC_BAR_LISTS';
+            } else if (gdcState.mode === 'REG_RESULT') {
+                gdcState.mode = 'REG_MENU';
+            } else {
+                gdcState.mode = 'STAT_LISTS';
+            }
+            renderCasioSim();
+        }
+
+        function simAppendChar(ch) {
+            const inp = document.getElementById('gdc-num-input');
+            if (!inp) return;
+            if (ch === '-' && !inp.value.startsWith('-')) {
+                inp.value = '-' + inp.value;
+            } else {
+                inp.value += ch;
+            }
+            inp.focus();
+        }
+
+        function simBackspace() {
+            const inp = document.getElementById('gdc-num-input');
+            if (inp && inp.value.length > 0) {
+                inp.value = inp.value.slice(0, -1);
+                return;
+            }
+            const targetList = gdcState.activeCol === 1 ? gdcState.list1 : gdcState.list2;
+            if (targetList.length > 0) {
+                targetList.pop();
+                gdcState.activeRow = Math.max(0, targetList.length - 1);
+                gdcState.mode = 'STAT_LISTS';
+                renderCasioSim();
+            }
+        }
+
+        function simPressExe() {
+            const inp = document.getElementById('gdc-num-input');
+            if (!inp) return;
+            const raw = inp.value.trim();
+            if (raw !== '') {
+                const num = parseFloat(raw);
+                if (!Number.isNaN(num)) {
+                    const targetList = gdcState.activeCol === 1 ? gdcState.list1 : gdcState.list2;
+                    targetList[gdcState.activeRow] = num;
+                    gdcState.activeRow += 1;
+                }
+                inp.value = '';
+            }
+            gdcState.mode = 'STAT_LISTS';
+            renderCasioSim();
+            inp.focus();
+        }
+
+        function simPressFn(fnNum) {
+            if (gdcState.mode === 'MENU') {
+                if (fnNum === 1 || fnNum === 2) gdcState.mode = 'STAT_LISTS';
+                renderCasioSim();
+                return;
+            }
+            if (gdcState.mode === 'STAT_LISTS') {
+                if (fnNum === 2) gdcState.mode = 'CALC_BAR_LISTS';
+                renderCasioSim();
+                return;
+            }
+            if (gdcState.mode === 'CALC_BAR_LISTS') {
+                if (fnNum === 3) gdcState.mode = 'REG_MENU';
+                else if (fnNum === 6) gdcState.mode = 'SET_MENU';
+                renderCasioSim();
+                return;
+            }
+            if (gdcState.mode === 'CALC_MENU') {
+                if (fnNum === 3) gdcState.mode = 'REG_MENU';
+                else if (fnNum === 6) gdcState.mode = 'SET_MENU';
+                renderCasioSim();
+                return;
+            }
+            if (gdcState.mode === 'SET_MENU') {
+                if (fnNum === 1) gdcState.xList = 'List1';
+                else if (fnNum === 2) gdcState.xList = 'List2';
+                else if (fnNum === 3) gdcState.yList = 'List1';
+                else if (fnNum === 4) gdcState.yList = 'List2';
+                else if (fnNum === 6) gdcState.mode = 'CALC_BAR_LISTS';
+                renderCasioSim();
+                return;
+            }
+            if (gdcState.mode === 'SET_MENU') {
+                if (fnNum === 1) gdcState.xList = 'List1';
+                else if (fnNum === 2) gdcState.xList = 'List2';
+                else if (fnNum === 3) gdcState.yList = 'List1';
+                else if (fnNum === 4) gdcState.yList = 'List2';
+                else if (fnNum === 6) gdcState.mode = 'CALC_MENU';
+                renderCasioSim();
+                return;
+            }
+            if (gdcState.mode === 'REG_MENU') {
+                if (fnNum === 1) {
+                    gdcState.regType = 'LIN';
+                    gdcState.mode = 'REG_RESULT';
+                } else if (fnNum === 3) {
+                    gdcState.regType = 'QUAD';
+                    gdcState.mode = 'REG_RESULT';
+                }
+                renderCasioSim();
+                return;
+            }
+            if (gdcState.mode === 'REG_RESULT') {
+                if (fnNum === 6) gdcState.mode = 'STAT_LISTS';
+                renderCasioSim();
+            }
+        }
+
+        // =========================================================================
+        // SLIDE NAVIGATION & INITIALIZATION
+        // =========================================================================
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const slideCounter = document.getElementById('slideCounter');
+        const slideSelector = document.getElementById('slideSelector');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const cornerPrevBtn = document.getElementById('cornerPrevBtn');
+        const cornerNextBtn = document.getElementById('cornerNextBtn');
+        const cornerSlideLabel = document.getElementById('cornerSlideLabel');
+
+        function updateNavigation() {
+            slides.forEach((slide, idx) => {
+                slide.classList.toggle('active', idx === currentSlide);
+            });
+            if (slideCounter) slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            if (slideSelector) slideSelector.value = currentSlide.toString();
+            if (prevBtn) prevBtn.disabled = currentSlide === 0;
+            if (nextBtn) nextBtn.disabled = currentSlide === totalSlides - 1;
+            if (cornerPrevBtn) cornerPrevBtn.disabled = currentSlide === 0;
+            if (cornerNextBtn) cornerNextBtn.disabled = currentSlide === totalSlides - 1;
+            if (cornerSlideLabel) cornerSlideLabel.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+        }
+
+        function changeSlide(delta) {
+            const nextIndex = currentSlide + delta;
+            if (nextIndex >= 0 && nextIndex < totalSlides) {
+                currentSlide = nextIndex;
+                updateNavigation();
+            }
+        }
+
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                updateNavigation();
+            }
+        }
+
+        // Keyboard navigation (Left / Right arrow keys)
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                return;
+            }
+            if (e.key === 'ArrowRight') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+
+        // Initialize SVG difference tables, CASIO simulator, and slide state on load
+        renderAllTables();
+        renderCasioSim();
+        updateNavigation();
+    </script>
+</body>
+</html>
